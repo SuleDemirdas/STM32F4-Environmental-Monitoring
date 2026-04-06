@@ -1,0 +1,24 @@
+# Derleme (Build) Çıktıları - Bunlar her derlemede yeniden üretilir, repoda yeri yoktur
+Debug/
+Release/
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.su
+
+# STM32CubeMX Yedek Dosyaları
+*.bak
+*.ioc.bak
+*.tmp
+
+# İşletim Sistemi Kalıntıları
+.DS_Store
+Thumbs.db
+
+# Kullanıcıya Özel IDE Ayarları (Proje dosyaları .project ve .cproject hariç)
+*.launch
+.metadata/
