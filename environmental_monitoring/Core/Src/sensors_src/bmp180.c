@@ -15,12 +15,12 @@ BMP180_CalibrationData_t calib_data_t;
 
 int8_t BMP180_get_cal_param(void)
 {
-	uint8_t buffer_calib_data_u8[CALIB_DATA_SIZE] = {0};
+	uint8_t buffer_calib_data_u8[BMP180_CALIB_DATA_SIZE] = {0};
 
-	for( int i = 0; i < CALIB_DATA_SIZE; i++ )
+	for( int i = 0; i < BMP180_CALIB_DATA_SIZE; i++ )
 	{
 		uint8_t data = 0;
-		if(HAL_I2C_Mem_Read(&hi2c3, BMP180_ADDRESS, CALIB_DATA_START_ADDRESS + i, 1, &data, 1, 100) == HAL_OK)
+		if(HAL_I2C_Mem_Read(&hi2c3, BMP180_ADDRESS, BMP180_REG_CALIB_DATA_START + i, 1, &data, 1, 100) == HAL_OK)
 		{
 			buffer_calib_data_u8[i] = data;
 		}
@@ -44,3 +44,46 @@ int8_t BMP180_get_cal_param(void)
 	return 1;
 }
 
+int8_t BMP180_get_ut(int32_t *ut_result)
+{
+	BMP180_CtrlMeas_t ctrlMeas;
+	ctrlMeas.bits.measure = BMP180_MEASURE_TEMP;
+	ctrlMeas.bits.sco = 1;
+	ctrlMeas.bits.oss = 0;
+
+	uint8_t read_buffer[2] = {0};
+
+	if(HAL_I2C_Mem_Write(&hi2c3, BMP180_ADDRESS, BMP180_REG_CTRL_MEAS, 1, &ctrlMeas.all, 1, 100) != HAL_OK)
+	{
+		return -1;
+	}
+	HAL_Delay(5);
+	if(HAL_I2C_Mem_Read(&hi2c3, BMP180_ADDRESS, BMP180_REG_OUT_MSB, 1, read_buffer, 2, 100) == HAL_OK)
+	{
+		*ut_result = (read_buffer[0] << 8) | read_buffer[1];
+		return 0;
+	}
+	return -1;
+}
+
+int8_t BMP180_get_up(int32_t *up_result)
+{
+	BMP180_CtrlMeas_t ctrlMeas;
+	ctrlMeas.bits.measure = BMP180_MEASURE_PRESSURE;
+	ctrlMeas.bits.sco = 1;
+	ctrlMeas.bits.oss = 0;
+
+	uint8_t read_buffer[3] = {0};
+
+	if(HAL_I2C_Mem_Write(&hi2c3, BMP180_ADDRESS, BMP180_REG_CTRL_MEAS, 1, &ctrlMeas.all, 1, 100) != HAL_OK)
+	{
+		return -1;
+	}
+	HAL_Delay(5);
+	if(HAL_I2C_Mem_Read(&hi2c3, BMP180_ADDRESS, BMP180_REG_OUT_MSB, 1, read_buffer, 3, 100) == HAL_OK)
+	{
+		*up_result = ((read_buffer[0] << 16) | (read_buffer[1] << 8) | read_buffer[2]) >> (8 - ctrlMeas.bits.oss);
+		return 0;
+	}
+	return -1;
+}

@@ -38,6 +38,9 @@ typedef struct
 #define BMP180_REG_SOFT_RST				0xE0
 #define BMP180_REG_CHIP_ID				0xD0
 
+#define BMP180_MEASURE_TEMP				0x0E
+#define BMP180_MEASURE_PRESSURE			0x14
+
 typedef union
 {
 	uint8_t all;
@@ -49,5 +52,8 @@ typedef union
 }BMP180_CtrlMeas_t;
 
 int8_t BMP180_get_cal_param(void);
+int8_t BMP180_get_ut(int32_t *ut_result);
+int8_t BMP180_get_up(int32_t *up_result);
+
 
 #endif /* INC_SENSORS_INC_BMP180_H_ */
