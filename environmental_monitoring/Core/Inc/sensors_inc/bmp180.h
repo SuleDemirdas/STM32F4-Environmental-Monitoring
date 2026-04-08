@@ -8,8 +8,12 @@
 #ifndef INC_SENSORS_INC_BMP180_H_
 #define INC_SENSORS_INC_BMP180_H_
 
-#include "stm32f4xx_hal.h"
 #include "stdint.h"
+#include <stddef.h>
+
+typedef int8_t (*BMP180_I2C_Read_Func)(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint16_t len);
+typedef int8_t (*BMP180_I2C_Write_Func)(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint16_t len);
+typedef void   (*BMP180_Delay_Func)(uint32_t ms);
 
 typedef struct
 {
@@ -25,6 +29,17 @@ typedef struct
 	int16_t MC;
 	int16_t MD;
 }BMP180_CalibrationData_t;
+
+typedef struct {
+	BMP180_I2C_Read_Func  i2c_read;
+	BMP180_I2C_Write_Func i2c_write;
+	BMP180_Delay_Func     delay_ms;
+    uint8_t oss;
+    BMP180_CalibrationData_t calib;
+    int32_t b5;
+    float temperature_C;
+    float pressure_Pa;
+} BMP180_HandleTypeDef;
 
 #define BMP180_CALIB_DATA_SIZE			22
 #define BMP180_ADDRESS             		0xEE
@@ -51,9 +66,12 @@ typedef union
 	}bits;
 }BMP180_CtrlMeas_t;
 
+int8_t BMP180_Init(BMP180_HandleTypeDef *dev);
+int8_t BMP180_Read(BMP180_HandleTypeDef *dev);
 int8_t BMP180_get_cal_param(void);
-int8_t BMP180_get_ut(int32_t *ut_result);
-int8_t BMP180_get_up(int32_t *up_result);
-
+int8_t BMP180_get_ut(BMP180_HandleTypeDef *dev, int32_t *ut_result);
+int8_t BMP180_get_up(BMP180_HandleTypeDef *dev, int32_t *up_result);
+void BMP180_calc_temperature(BMP180_HandleTypeDef *dev, int32_t ut);
+void BMP180_calc_pressure(BMP180_HandleTypeDef *dev, int32_t up);
 
 #endif /* INC_SENSORS_INC_BMP180_H_ */
