@@ -63,7 +63,24 @@ static void MX_USART2_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t device_address_u8 = 0x00;
+
+int8_t stm32_i2c_read_wrapper(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint16_t len) {
+    if(HAL_I2C_Mem_Read(&hi2c3, dev_addr, reg_addr, 1, data, len, 100) == HAL_OK) return 0;
+    return -1;
+}
+
+int8_t stm32_i2c_write_wrapper(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint16_t len) {
+    if(HAL_I2C_Mem_Write(&hi2c3, dev_addr, reg_addr, 1, data, len, 100) == HAL_OK) return 0;
+    return -1;
+}
+
+void stm32_delay_wrapper(uint32_t ms) {
+    HAL_Delay(ms);
+}
+
+BMP180_HandleTypeDef hbmp180;
+
+int8_t error = 0;
 /* USER CODE END 0 */
 
 /**
@@ -99,8 +116,16 @@ int main(void)
   MX_TIM3_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  hbmp180.i2c_read = stm32_i2c_read_wrapper;
+  hbmp180.i2c_write = stm32_i2c_write_wrapper;
+  hbmp180.delay_ms = stm32_delay_wrapper;
+  hbmp180.oss = 0;
+
+  BMP180_Init(&hbmp180);
+  BMP180_Read(&hbmp180);
+
   HAL_TIM_Base_Start_IT(&htim3);
-  BMP180_get_cal_param();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
