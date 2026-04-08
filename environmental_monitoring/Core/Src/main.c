@@ -21,7 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "i2c_core.h"
+#include "bmp180.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,6 +64,23 @@ static void MX_USART2_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+int8_t stm32_i2c_read_wrapper(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint16_t len) {
+    if(HAL_I2C_Mem_Read(&hi2c3, dev_addr, reg_addr, 1, data, len, 100) == HAL_OK) return 0;
+    return -1;
+}
+
+int8_t stm32_i2c_write_wrapper(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint16_t len) {
+    if(HAL_I2C_Mem_Write(&hi2c3, dev_addr, reg_addr, 1, data, len, 100) == HAL_OK) return 0;
+    return -1;
+}
+
+void stm32_delay_wrapper(uint32_t ms) {
+    HAL_Delay(ms);
+}
+
+BMP180_HandleTypeDef hbmp180;
+
+int8_t error = 0;
 /* USER CODE END 0 */
 
 /**
@@ -98,6 +116,15 @@ int main(void)
   MX_TIM3_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  hbmp180.i2c_read = stm32_i2c_read_wrapper;
+  hbmp180.i2c_write = stm32_i2c_write_wrapper;
+  hbmp180.delay_ms = stm32_delay_wrapper;
+  hbmp180.oss = 0;
+
+  BMP180_Init(&hbmp180);
+  BMP180_Read(&hbmp180);
+
+  HAL_TIM_Base_Start_IT(&htim3);
 
   /* USER CODE END 2 */
 
@@ -136,7 +163,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = 8;
   RCC_OscInitStruct.PLL.PLLN = 50;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
   RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -152,7 +179,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
   {
     Error_Handler();
   }
