@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "i2c_core.h"
 #include "bmp180.h"
+#include "bh1750.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -65,12 +66,32 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN 0 */
 
 int8_t stm32_i2c_read_wrapper(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint16_t len) {
-    if(HAL_I2C_Mem_Read(&hi2c3, dev_addr, reg_addr, 1, data, len, 100) == HAL_OK) return 0;
+	if (reg_addr == 0)
+	{
+	        if (HAL_I2C_Master_Receive(&hi2c3, dev_addr, data, len, 100) == HAL_OK)
+	        {
+	            return 0;
+	        }
+	    }
+    if(HAL_I2C_Mem_Read(&hi2c3, dev_addr, reg_addr, 1, data, len, 100) == HAL_OK)
+	{
+    	return 0;
+	}
     return -1;
 }
 
 int8_t stm32_i2c_write_wrapper(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint16_t len) {
-    if(HAL_I2C_Mem_Write(&hi2c3, dev_addr, reg_addr, 1, data, len, 100) == HAL_OK) return 0;
+	if(reg_addr == 0)
+	{
+		if (HAL_I2C_Master_Transmit(&hi2c3, dev_addr, data, len, 100) == HAL_OK)
+		{
+			return 0;
+		}
+	}
+    if(HAL_I2C_Mem_Write(&hi2c3, dev_addr, reg_addr, 1, data, len, 100) == HAL_OK)
+	{
+    	return 0;
+	}
     return -1;
 }
 
@@ -79,8 +100,11 @@ void stm32_delay_wrapper(uint32_t ms) {
 }
 
 BMP180_HandleTypeDef hbmp180;
+BH1750_HandleTypeDef hbh1750;
 
 int8_t error = 0;
+uint8_t address = 0;
+uint8_t flag_light_sensor = 0;
 /* USER CODE END 0 */
 
 /**
@@ -116,16 +140,21 @@ int main(void)
   MX_TIM3_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  hbmp180.i2c_read = stm32_i2c_read_wrapper;
-  hbmp180.i2c_write = stm32_i2c_write_wrapper;
-  hbmp180.delay_ms = stm32_delay_wrapper;
-  hbmp180.oss = 0;
+//  hbmp180.i2c_read = stm32_i2c_read_wrapper;
+//  hbmp180.i2c_write = stm32_i2c_write_wrapper;
+//  hbmp180.delay_ms = stm32_delay_wrapper;
+//  hbmp180.oss = 0;
+//
+//  BMP180_Init(&hbmp180);
+//  BMP180_Read(&hbmp180);
 
-  BMP180_Init(&hbmp180);
-  BMP180_Read(&hbmp180);
-
+  hbh1750.address = BH1750_ADDRESS_GND;
+  hbh1750.delay_ms = stm32_delay_wrapper;
+  hbh1750.i2c_read = stm32_i2c_read_wrapper;
+  hbh1750.i2c_write = stm32_i2c_write_wrapper;
+  hbh1750.mode = BH1750_ONE_TIME_H_RES_MODE;
+  BH1750_Init(&hbh1750);
   HAL_TIM_Base_Start_IT(&htim3);
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -133,8 +162,12 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
+	  if(flag_light_sensor)
+	  {
+		  BH1750_Read(&hbh1750);
+		  flag_light_sensor = 0;
+	  }
   }
   /* USER CODE END 3 */
 }
@@ -334,6 +367,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim->Instance == TIM3)
 	{
+		flag_light_sensor = 1;
 		HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin );
 	}
 }
