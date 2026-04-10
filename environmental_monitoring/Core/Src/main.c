@@ -24,6 +24,7 @@
 #include "i2c_core.h"
 #include "bmp180.h"
 #include "bh1750.h"
+#include "aht20.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,6 +102,7 @@ void stm32_delay_wrapper(uint32_t ms) {
 
 BMP180_HandleTypeDef hbmp180;
 BH1750_HandleTypeDef hbh1750;
+AHT20_HandleTypeDef	haht20;
 
 int8_t error = 0;
 uint8_t address = 0;
@@ -155,6 +157,13 @@ int main(void)
   hbh1750.mode = BH1750_ONE_TIME_H_RES_MODE;
   BH1750_Init(&hbh1750);
   HAL_TIM_Base_Start_IT(&htim3);
+//  address = I2C_ScanDeviceAddress();
+
+  haht20.delay_ms = stm32_delay_wrapper;
+  haht20.i2c_read = stm32_i2c_read_wrapper;
+  haht20.i2c_write = stm32_i2c_write_wrapper;
+  error =  AHT20_Init(&haht20);
+  AHT20_Read(&haht20);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -165,7 +174,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	  if(flag_light_sensor)
 	  {
-		  BH1750_Read(&hbh1750);
+		  //BH1750_Read(&hbh1750);
 		  flag_light_sensor = 0;
 	  }
   }
