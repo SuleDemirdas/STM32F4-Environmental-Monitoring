@@ -37,6 +37,8 @@ extern "C" {
 #include "ring_buffer.h"
 #include "filter.h"
 #include <math.h>
+#include <string.h>
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
