@@ -1,3 +1,40 @@
+/*
+ * filter.c
+ *
+ *  Created on: Apr 12, 2026
+ *      Author: Şule Nur Demirdaş
+ */
+
+#include "filter.h"
+
+float filter_sensor_value(Filter_Handle_t *p_filt, float raw_sensor_value, uint8_t window_size)
+{
+	// Add data to the window
+	if (p_filt->count < window_size) {
+		p_filt->window[p_filt->count] = raw_sensor_value;
+		p_filt->count++;
+	}
+	else
+	{
+		// if window is full delete old data and add new
+		for(int i = 0; i < window_size - 1; i++)
+		{
+			p_filt->window[i] = p_filt->window[i+1];
+		}
+		p_filt->window[window_size - 1] = raw_sensor_value;
+	}
+
+	float sorted_window[MAX_WINDOW_SIZE];
+	for (int i = 0; i < p_filt->count; i++)
+	{
+		sorted_window[i] = p_filt->window[i];
+	}
+
+	bubble_sort(sorted_window, p_filt->count);
+
+	return calculate_median(sorted_window, p_filt->count);
+}
+
 void bubble_sort(float* array, uint8_t array_size)
 {
     float temp;
