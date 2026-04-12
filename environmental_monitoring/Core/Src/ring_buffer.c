@@ -53,12 +53,14 @@ int buffer_get_value(buf_handle_t *p_handle, float *p_sensor_data)
 	p_handle->count--;
 	return 0;
 }
-
 int buffer_write_value(buf_handle_t *p_handle, float p_sensor_data)
 {
-	p_handle->count++;
-	p_handle->buffer[p_handle->head] = p_sensor_data;
-	p_handle->head = (p_handle->head + 1) % p_handle->size;
-	return 0;
-}
+    if (p_handle->count < p_handle->size)
+    {
+        p_handle->count++;
+    }
 
+    p_handle->buffer[p_handle->head] = p_sensor_data;
+    p_handle->head = (p_handle->head + 1) % p_handle->size;
+    return 0;
+}

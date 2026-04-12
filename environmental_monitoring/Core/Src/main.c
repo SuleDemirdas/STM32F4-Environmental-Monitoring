@@ -103,12 +103,14 @@ AHT20_HandleTypeDef	haht20;
 Filter_Handle_t hFiltHum, hFiltTemp, hFiltLight;
 
 buf_handle_t hBufHum, hBufTemp, hBufLight;
+Sensor_Stats_t hum_stats, temp_stats, light_stats;
 
-#define RING_BUFFER_SIZE 20
+#define RING_BUFFER_SIZE 30
 float storageHum[RING_BUFFER_SIZE];
 float storageTemp[RING_BUFFER_SIZE];
 float storageLight[RING_BUFFER_SIZE];
 
+uint8_t seconds_counter = 0;
 volatile uint8_t read_sensor_flag = 0;
 
 /* USER CODE END 0 */
@@ -190,7 +192,27 @@ int main(void)
           float filt_light = filter_sensor_value(&hFiltLight, raw_light, 5);
           buffer_write_value(&hBufLight, filt_light);
 
-          read_sensor_flag = 0;
+          seconds_counter++;
+
+		  if(seconds_counter >= 30)
+			  {
+				  calculate_statistics(&hBufHum, &hum_stats);
+				  calculate_statistics(&hBufTemp, &temp_stats);
+				  calculate_statistics(&hBufLight, &light_stats);
+
+				  char uart_buf[128];
+				  sprintf(uart_buf, "HUM:%.2f,%.2f,%.2f,%.2f\r\n", hum_stats.min, hum_stats.max, hum_stats.median, hum_stats.std_dev);
+				  HAL_UART_Transmit(&huart2, (uint8_t*)uart_buf, strlen(uart_buf), 100);
+
+				  sprintf(uart_buf, "TMP:%.2f,%.2f,%.2f,%.2f\r\n", temp_stats.min, temp_stats.max, temp_stats.median, temp_stats.std_dev);
+				  HAL_UART_Transmit(&huart2, (uint8_t*)uart_buf, strlen(uart_buf), 100);
+
+				  sprintf(uart_buf, "LUX:%.2f,%.2f,%.2f,%.2f\r\n", light_stats.min, light_stats.max, light_stats.median, light_stats.std_dev);
+				  HAL_UART_Transmit(&huart2, (uint8_t*)uart_buf, strlen(uart_buf), 100);
+
+				  seconds_counter = 0;
+			  }
+		  read_sensor_flag = 0;
       }
   }
   /* USER CODE END 3 */
@@ -394,6 +416,47 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		read_sensor_flag = 1;
 		HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin );
 	}
+}
+
+void calculate_statistics(buf_handle_t *p_handle, Sensor_Stats_t *stats)
+{
+    if (p_handle->count == 0)
+	{
+    	return;
+	}
+
+    float temp_arr[RING_BUFFER_SIZE];
+    float sum = 0.0f;
+
+    stats->min = p_handle->buffer[0];
+    stats->max = p_handle->buffer[0];
+
+    for (uint16_t i = 0; i < p_handle->count; i++) {
+        float val = p_handle->buffer[i];
+        temp_arr[i] = val;
+        sum += val;
+
+        if (val < stats->min)
+		{
+        	stats->min = val;
+		}
+        if (val > stats->max)
+		{
+        	stats->max = val;
+		}
+    }
+
+    float mean = sum / p_handle->count;
+    float variance_sum = 0.0f;
+
+    for (uint16_t i = 0; i < p_handle->count; i++)
+    {
+        variance_sum += (temp_arr[i] - mean) * (temp_arr[i] - mean);
+    }
+    stats->std_dev = sqrtf(variance_sum / p_handle->count);
+
+    bubble_sort(temp_arr, p_handle->count);
+    stats->median = calculate_median(temp_arr, p_handle->count);
 }
 
 /* USER CODE END 4 */

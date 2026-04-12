@@ -36,11 +36,19 @@ extern "C" {
 #include "aht20.h"
 #include "ring_buffer.h"
 #include "filter.h"
+#include <math.h>
+#include <string.h>
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
+typedef struct {
+    float min;
+    float max;
+    float median;
+    float std_dev;
+} Sensor_Stats_t;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -57,7 +65,7 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void calculate_statistics(buf_handle_t *p_handle, Sensor_Stats_t *stats);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
