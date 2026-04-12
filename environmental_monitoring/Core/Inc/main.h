@@ -44,10 +44,10 @@ extern "C" {
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 typedef struct {
-    float min;
-    float max;
-    float median;
-    float std_dev;
+    float min;      /**< Minimum value observed in the buffer. */
+    float max;      /**< Maximum value observed in the buffer. */
+    float median;   /**< Median value of the sorted buffer. */
+    float std_dev;  /**< Population standard deviation of the buffer. */
 } Sensor_Stats_t;
 /* USER CODE END ET */
 
@@ -65,6 +65,12 @@ typedef struct {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+/**
+ * @brief Computes min, max, median, and standard deviation from a ring buffer.
+ *
+ * @param[in]  p_handle Pointer to the ring buffer handle to analyse.
+ * @param[out] stats    Pointer to the Sensor_Stats_t structure to fill.
+ */
 void calculate_statistics(buf_handle_t *p_handle, Sensor_Stats_t *stats);
 /* USER CODE END EFP */
 

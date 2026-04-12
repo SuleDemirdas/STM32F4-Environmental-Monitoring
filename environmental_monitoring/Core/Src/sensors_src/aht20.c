@@ -76,7 +76,5 @@ int8_t AHT20_Read(AHT20_HandleTypeDef *dev) {
     dev->humidity = ((float)raw_humidity / 1048576.0f) * 100.0f;
     dev->temperature = (((float)raw_temperature / 1048576.0f) * 200.0f) - 50.0f;
 
-    // Not: rx_buffer[6] içerisinde CRC verisi var, şimdilik atlıyoruz.
-
     return 0;
 }
