@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "i2c_core.h"
@@ -101,14 +100,17 @@ BMP180_HandleTypeDef hbmp180;
 BH1750_HandleTypeDef hbh1750;
 AHT20_HandleTypeDef	haht20;
 
-uint8_t address = 0;
-uint8_t error = 0;
+Filter_Handle_t hFiltHum, hFiltTemp, hFiltLight;
+
+buf_handle_t hBufHum, hBufTemp, hBufLight;
+
+#define RING_BUFFER_SIZE 20
+float storageHum[RING_BUFFER_SIZE];
+float storageTemp[RING_BUFFER_SIZE];
+float storageLight[RING_BUFFER_SIZE];
 
 volatile uint8_t read_sensor_flag = 0;
-float pressure = 0.0f;
-float temperature = 0.0f;
-float humidity = 0.0f;
-float light = 0.0f;
+
 /* USER CODE END 0 */
 
 /**
@@ -149,7 +151,7 @@ int main(void)
   hbmp180.i2c_write = stm32_i2c_write_wrapper;
   hbmp180.delay_ms = stm32_delay_wrapper;
   hbmp180.oss = 0;
-  error = BMP180_Init(&hbmp180);
+  BMP180_Init(&hbmp180);
 
   hbh1750.address = BH1750_ADDRESS_GND;
   hbh1750.delay_ms = stm32_delay_wrapper;
@@ -163,7 +165,10 @@ int main(void)
   haht20.i2c_write = stm32_i2c_write_wrapper;
   AHT20_Init(&haht20);
 
-  //address = I2C_ScanDeviceAddress(&hi2c3);
+  buffer_init(&hBufHum, storageHum, RING_BUFFER_SIZE);
+  buffer_init(&hBufTemp, storageTemp, RING_BUFFER_SIZE);
+  buffer_init(&hBufLight, storageLight, RING_BUFFER_SIZE);
+
   HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
 
@@ -171,16 +176,22 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
-    /* USER CODE BEGIN 3 */
-	  if(read_sensor_flag)
-	  {
-		  light = i2c_sensor_read(BH1750_ADDRESS, LIGHT_SENSOR, &hbh1750);
-		  humidity = i2c_sensor_read(AHT20_ADDRESS, HUMIDITY_SENSOR, &haht20);
-		  //pressure = i2c_sensor_read(BMP180_ADDRESS, PRESSURE_SENSOR, &hbmp180);
-		  temperature = i2c_sensor_read(AHT20_ADDRESS, TEMPERATURE_SENSOR, &hbmp180);
-		  read_sensor_flag = 0;
-	  }
+      if(read_sensor_flag)
+      {
+          float raw_hum = i2c_sensor_read(AHT20_ADDRESS, HUMIDITY_SENSOR, &haht20);
+          float filt_hum = filter_sensor_value(&hFiltHum, raw_hum, 5); // 5: Pencere boyutu
+          buffer_write_value(&hBufHum, filt_hum); // Dairesel tampona ekle
+
+          float raw_temp = i2c_sensor_read(AHT20_ADDRESS, TEMPERATURE_SENSOR, &haht20);
+          float filt_temp = filter_sensor_value(&hFiltTemp, raw_temp, 5);
+          buffer_write_value(&hBufTemp, filt_temp);
+
+          float raw_light = i2c_sensor_read(BH1750_ADDRESS, LIGHT_SENSOR, &hbh1750);
+          float filt_light = filter_sensor_value(&hFiltLight, raw_light, 5);
+          buffer_write_value(&hBufLight, filt_light);
+
+          read_sensor_flag = 0;
+      }
   }
   /* USER CODE END 3 */
 }
