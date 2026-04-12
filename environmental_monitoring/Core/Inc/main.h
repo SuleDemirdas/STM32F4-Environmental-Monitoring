@@ -35,6 +35,7 @@ extern "C" {
 #include "bh1750.h"
 #include "aht20.h"
 #include "ring_buffer.h"
+#include "filter.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
