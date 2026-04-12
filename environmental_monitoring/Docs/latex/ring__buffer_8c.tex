@@ -1,0 +1,153 @@
+\doxysection{Core/\+\+Src/\+ring\+\_\+buffer.c File Reference}
+\hypertarget{ring__buffer_8c}{}\label{ring__buffer_8c}\index{Core/Src/ring\_buffer.c@{Core/Src/ring\_buffer.c}}
+
+
+Circular (ring) buffer implementation for float sensor samples.  
+
+
+{\ttfamily \+\#include "{}ring\+\_\+buffer.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{ring__buffer_8c_a188de32610d6e2dfae70821ad2634d9d}{buffer\+\_\+init}} (\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}p\+\_\+handle, float \texorpdfstring{$\ast$}{*}p\+\_\+buffer, uint16\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Initialises a ring buffer handle. \end{DoxyCompactList}\item 
+bool \doxymbox{\hyperlink{ring__buffer_8c_a587dacf7f2d11b17e6e5809edf67eb5b}{buffer\+\_\+is\+Full}} (\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}p\+\_\+handle)
+\begin{DoxyCompactList}\small\item\em Checks whether the buffer is full. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{ring__buffer_8c_abf3d36fc5962211af65dddfb7b53563f}{buffer\+\_\+clear}} (\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}p\+\_\+handle)
+\begin{DoxyCompactList}\small\item\em Resets the buffer to an empty state without clearing storage memory. \end{DoxyCompactList}\item 
+bool \doxymbox{\hyperlink{ring__buffer_8c_a66a8c20f54a4733134b2551b0c3863e6}{buffer\+\_\+is\+Empty}} (\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}p\+\_\+handle)
+\begin{DoxyCompactList}\small\item\em Checks whether the buffer is empty. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{ring__buffer_8c_a0eea3284d10713f36abade008f043ff5}{buffer\+\_\+get\+\_\+value}} (\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}p\+\_\+handle, float \texorpdfstring{$\ast$}{*}p\+\_\+sensor\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Reads and removes the oldest sample from the buffer (FIFO order). \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{ring__buffer_8c_a77daa9504d73ec61f1b7b9aa83da8530}{buffer\+\_\+write\+\_\+value}} (\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}p\+\_\+handle, float p\+\_\+sensor\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Writes a new sample into the buffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Circular (ring) buffer implementation for float sensor samples. 
+
+\begin{DoxyAuthor}{Author}
+Şule Nur Demirdaş 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+April 2026 
+\end{DoxyDate}
+
+
+\label{doc-func-members}
+\Hypertarget{ring__buffer_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{ring__buffer_8c_abf3d36fc5962211af65dddfb7b53563f}\index{ring\_buffer.c@{ring\_buffer.c}!buffer\_clear@{buffer\_clear}}
+\index{buffer\_clear@{buffer\_clear}!ring\_buffer.c@{ring\_buffer.c}}
+\doxysubsubsection{\texorpdfstring{buffer\_clear()}{buffer\_clear()}}
+{\footnotesize\ttfamily \label{ring__buffer_8c_abf3d36fc5962211af65dddfb7b53563f} 
+void buffer\+\_\+clear (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{p\+\_\+handle}{}\end{DoxyParamCaption})}
+
+
+
+Resets the buffer to an empty state without clearing storage memory. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em p\+\_\+handle} & Pointer to the buffer handle. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{ring__buffer_8c_a0eea3284d10713f36abade008f043ff5}\index{ring\_buffer.c@{ring\_buffer.c}!buffer\_get\_value@{buffer\_get\_value}}
+\index{buffer\_get\_value@{buffer\_get\_value}!ring\_buffer.c@{ring\_buffer.c}}
+\doxysubsubsection{\texorpdfstring{buffer\_get\_value()}{buffer\_get\_value()}}
+{\footnotesize\ttfamily \label{ring__buffer_8c_a0eea3284d10713f36abade008f043ff5} 
+int buffer\+\_\+get\+\_\+value (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{p\+\_\+handle}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{p\+\_\+sensor\+\_\+data}{}\end{DoxyParamCaption})}
+
+
+
+Reads and removes the oldest sample from the buffer (FIFO order). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em p\+\_\+handle} & Pointer to the buffer handle. \\
+\hline
+\doxymbox{\texttt{out}}  & {\em p\+\_\+sensor\+\_\+data} & Pointer to the float that receives the value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 if the buffer is empty. 
+\end{DoxyReturn}
+\Hypertarget{ring__buffer_8c_a188de32610d6e2dfae70821ad2634d9d}\index{ring\_buffer.c@{ring\_buffer.c}!buffer\_init@{buffer\_init}}
+\index{buffer\_init@{buffer\_init}!ring\_buffer.c@{ring\_buffer.c}}
+\doxysubsubsection{\texorpdfstring{buffer\_init()}{buffer\_init()}}
+{\footnotesize\ttfamily \label{ring__buffer_8c_a188de32610d6e2dfae70821ad2634d9d} 
+void buffer\+\_\+init (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{p\+\_\+handle}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{p\+\_\+buffer}{, }\item[{uint16\+\_\+t}]{size}{}\end{DoxyParamCaption})}
+
+
+
+Initialises a ring buffer handle. 
+
+Must be called once before any other buffer operation. The caller provides the backing storage array and its capacity.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{out}}  & {\em p\+\_\+handle} & Pointer to the buffer handle to initialise. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em p\+\_\+buffer} & Pointer to the float array used as storage. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em size} & Number of elements in {\ttfamily p\+\_\+buffer}. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{ring__buffer_8c_a66a8c20f54a4733134b2551b0c3863e6}\index{ring\_buffer.c@{ring\_buffer.c}!buffer\_isEmpty@{buffer\_isEmpty}}
+\index{buffer\_isEmpty@{buffer\_isEmpty}!ring\_buffer.c@{ring\_buffer.c}}
+\doxysubsubsection{\texorpdfstring{buffer\_isEmpty()}{buffer\_isEmpty()}}
+{\footnotesize\ttfamily \label{ring__buffer_8c_a66a8c20f54a4733134b2551b0c3863e6} 
+bool buffer\+\_\+is\+Empty (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{p\+\_\+handle}{}\end{DoxyParamCaption})}
+
+
+
+Checks whether the buffer is empty. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em p\+\_\+handle} & Pointer to the buffer handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if count == 0, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{ring__buffer_8c_a587dacf7f2d11b17e6e5809edf67eb5b}\index{ring\_buffer.c@{ring\_buffer.c}!buffer\_isFull@{buffer\_isFull}}
+\index{buffer\_isFull@{buffer\_isFull}!ring\_buffer.c@{ring\_buffer.c}}
+\doxysubsubsection{\texorpdfstring{buffer\_isFull()}{buffer\_isFull()}}
+{\footnotesize\ttfamily \label{ring__buffer_8c_a587dacf7f2d11b17e6e5809edf67eb5b} 
+bool buffer\+\_\+is\+Full (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{p\+\_\+handle}{}\end{DoxyParamCaption})}
+
+
+
+Checks whether the buffer is full. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em p\+\_\+handle} & Pointer to the buffer handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if count == size, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{ring__buffer_8c_a77daa9504d73ec61f1b7b9aa83da8530}\index{ring\_buffer.c@{ring\_buffer.c}!buffer\_write\_value@{buffer\_write\_value}}
+\index{buffer\_write\_value@{buffer\_write\_value}!ring\_buffer.c@{ring\_buffer.c}}
+\doxysubsubsection{\texorpdfstring{buffer\_write\_value()}{buffer\_write\_value()}}
+{\footnotesize\ttfamily \label{ring__buffer_8c_a77daa9504d73ec61f1b7b9aa83da8530} 
+int buffer\+\_\+write\+\_\+value (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{p\+\_\+handle}{, }\item[{float}]{p\+\_\+sensor\+\_\+data}{}\end{DoxyParamCaption})}
+
+
+
+Writes a new sample into the buffer. 
+
+If the buffer is full the oldest sample is overwritten (count is kept at size). This ensures the buffer always holds the most recent samples.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em p\+\_\+handle} & Pointer to the buffer handle. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em p\+\_\+sensor\+\_\+data} & Float value to store. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Always 0. 
+\end{DoxyReturn}

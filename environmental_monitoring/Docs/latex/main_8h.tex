@@ -1,0 +1,98 @@
+\doxysection{Core/\+\+Inc/\+main.h File Reference}
+\hypertarget{main_8h}{}\label{main_8h}\index{Core/Inc/main.h@{Core/Inc/main.h}}
+
+
+:\+ Header for \doxylink{main_8c}{main.\+c} file. This file contains the common defines of the application.  
+
+
+{\ttfamily \+\#include "{}stm32f4xx\+\_\+hal.\+h"{}}\newline
+{\ttfamily \+\#include "{}bmp180.\+h"{}}\newline
+{\ttfamily \+\#include "{}bh1750.\+h"{}}\newline
+{\ttfamily \+\#include "{}aht20.\+h"{}}\newline
+{\ttfamily \+\#include "{}ring\+\_\+buffer.\+h"{}}\newline
+{\ttfamily \+\#include "{}filter.\+h"{}}\newline
+{\ttfamily \+\#include $<$math.\+h$>$}\newline
+{\ttfamily \+\#include $<$string.\+h$>$}\newline
+{\ttfamily \+\#include $<$stdio.\+h$>$}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \doxymbox{\hyperlink{struct_sensor___stats__t}{Sensor\+\_\+\+Stats\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{main_8h_aa0ae908d1e3952cd486ee20970cd4b6d}\label{main_8h_aa0ae908d1e3952cd486ee20970cd4b6d} 
+\+\#define {\bfseries LED\+\_\+\+GREEN\+\_\+\+Pin}~GPIO\+\_\+\+PIN\+\_\+12
+\item 
+\Hypertarget{main_8h_a274553bcc4193f1176d99f48de5059a1}\label{main_8h_a274553bcc4193f1176d99f48de5059a1} 
+\+\#define {\bfseries LED\+\_\+\+GREEN\+\_\+\+GPIO\+\_\+\+Port}~GPIOD
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\+\_\+\+Handler}} (void)
+\begin{DoxyCompactList}\small\item\em This function is executed in case of error occurrence. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{main_8h_a95bd85dc1d64343eabe72f219491f9b9}{calculate\+\_\+statistics}} (\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}p\+\_\+handle, \doxymbox{\hyperlink{struct_sensor___stats__t}{Sensor\+\_\+\+Stats\+\_\+t}} \texorpdfstring{$\ast$}{*}stats)
+\begin{DoxyCompactList}\small\item\em Computes min, max, median, and standard deviation from a ring buffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+:\+ Header for \doxylink{main_8c}{main.\+c} file. This file contains the common defines of the application. 
+
+\begin{DoxyAttention}{Attention}
+
+\end{DoxyAttention}
+Copyright (c) 2026 STMicroelectronics. All rights reserved.
+
+This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component. If no LICENSE file comes with this software, it is provided AS-\/\+IS. 
+
+\label{doc-func-members}
+\Hypertarget{main_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{main_8h_a95bd85dc1d64343eabe72f219491f9b9}\index{main.h@{main.h}!calculate\_statistics@{calculate\_statistics}}
+\index{calculate\_statistics@{calculate\_statistics}!main.h@{main.h}}
+\doxysubsubsection{\texorpdfstring{calculate\_statistics()}{calculate\_statistics()}}
+{\footnotesize\ttfamily \label{main_8h_a95bd85dc1d64343eabe72f219491f9b9} 
+void calculate\+\_\+statistics (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structbuf__handle__t}{buf\+\_\+handle\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{p\+\_\+handle}{, }\item[{\doxymbox{\hyperlink{struct_sensor___stats__t}{Sensor\+\_\+\+Stats\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{stats}{}\end{DoxyParamCaption})}
+
+
+
+Computes min, max, median, and standard deviation from a ring buffer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em p\+\_\+handle} & Pointer to the ring buffer handle to analyse. \\
+\hline
+\doxymbox{\texttt{out}}  & {\em stats} & Pointer to the \doxylink{struct_sensor___stats__t}{Sensor\+\_\+\+Stats\+\_\+t} structure to fill.\\
+\hline
+\end{DoxyParams}
+Computes min, max, median, and standard deviation from a ring buffer.
+
+Iterates over all valid samples in {\ttfamily p\+\_\+handle} to find the minimum, maximum and arithmetic mean. A second pass computes the population standard deviation. The buffer is then copied to a temporary array, sorted with \doxylink{filter_8h_a5e9663576f3278f9024b85f531f8667a}{bubble\+\_\+sort()}, and the median is extracted.
+
+\begin{DoxyNote}{Note}
+The function returns immediately if the buffer is empty.
+\end{DoxyNote}
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em p\+\_\+handle} & Pointer to the ring buffer handle containing the samples. \\
+\hline
+\doxymbox{\texttt{out}}  & {\em stats} & Pointer to the \doxylink{struct_sensor___stats__t}{Sensor\+\_\+\+Stats\+\_\+t} structure to populate. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{main_8h_a1730ffe1e560465665eb47d9264826f9}\index{main.h@{main.h}!Error\_Handler@{Error\_Handler}}
+\index{Error\_Handler@{Error\_Handler}!main.h@{main.h}}
+\doxysubsubsection{\texorpdfstring{Error\_Handler()}{Error\_Handler()}}
+{\footnotesize\ttfamily \label{main_8h_a1730ffe1e560465665eb47d9264826f9} 
+void Error\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+This function is executed in case of error occurrence. 
+
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}

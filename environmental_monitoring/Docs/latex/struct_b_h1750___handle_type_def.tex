@@ -1,0 +1,77 @@
+\doxysection{BH1750\+\_\+\+Handle\+Type\+Def Struct Reference}
+\hypertarget{struct_b_h1750___handle_type_def}{}\label{struct_b_h1750___handle_type_def}\index{BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}}
+
+
+BH1750 driver handle.  
+
+
+
+
+{\ttfamily \+\#include $<$bh1750.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{bh1750_8h_a98c6ccaa146604c8e2c6c3d718c4a367}{BH1750\+\_\+\+I2\+C\+\_\+\+Read\+\_\+\+Func}} \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_af04790c7ab63016f3aaff50ca1694bab}{i2c\+\_\+read}}
+\item 
+\doxymbox{\hyperlink{bh1750_8h_a18fac3fc28e66618cd621900e2b499dc}{BH1750\+\_\+\+I2\+C\+\_\+\+Write\+\_\+\+Func}} \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_aa0a746eab4afc5162a4173e7010e9393}{i2c\+\_\+write}}
+\item 
+\doxymbox{\hyperlink{bh1750_8h_ac12ddada7c8fbe8249cfaf57c69fe7de}{BH1750\+\_\+\+Delay\+\_\+\+Func}} \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_a9bab8f83914de380c80491c111eecd8e}{delay\+\_\+ms}}
+\item 
+uint8\+\_\+t \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_af3f726014b044194def151079f1f2d89}{address}}
+\item 
+uint8\+\_\+t \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_a37e90f5e3bd99fac2021fb3a326607d4}{mode}}
+\item 
+float \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_a03162a568e0564f8c5bc49129f9a6aef}{lux}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+BH1750 driver handle. 
+
+Populate all fields before calling \doxylink{bh1750_8h_a7af7493bcd0091d16d3945fe2f9cc157}{BH1750\+\_\+\+Init()}. After a successful \doxylink{bh1750_8h_ab7f9b67c6a16b8ab945f1624615fd52d}{BH1750\+\_\+\+Read()} the result is available in the lux field. 
+
+\label{doc-variable-members}
+\Hypertarget{struct_b_h1750___handle_type_def_doc-variable-members}
+\doxysubsection{Field Documentation}
+\Hypertarget{struct_b_h1750___handle_type_def_af3f726014b044194def151079f1f2d89}\index{BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}!address@{address}}
+\index{address@{address}!BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}}
+\doxysubsubsection{\texorpdfstring{address}{address}}
+{\footnotesize\ttfamily \label{struct_b_h1750___handle_type_def_af3f726014b044194def151079f1f2d89} 
+uint8\+\_\+t address}
+
+8-\/bit I2C device address (use BH1750\+\_\+\+ADDRESS\+\_\+\+GND or \+\_\+\+VCC). \Hypertarget{struct_b_h1750___handle_type_def_a9bab8f83914de380c80491c111eecd8e}\index{BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}!delay\_ms@{delay\_ms}}
+\index{delay\_ms@{delay\_ms}!BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}}
+\doxysubsubsection{\texorpdfstring{delay\_ms}{delay\_ms}}
+{\footnotesize\ttfamily \label{struct_b_h1750___handle_type_def_a9bab8f83914de380c80491c111eecd8e} 
+\doxymbox{\hyperlink{bh1750_8h_ac12ddada7c8fbe8249cfaf57c69fe7de}{BH1750\+\_\+\+Delay\+\_\+\+Func}} delay\+\_\+ms}
+
+Platform delay function pointer. \Hypertarget{struct_b_h1750___handle_type_def_af04790c7ab63016f3aaff50ca1694bab}\index{BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}!i2c\_read@{i2c\_read}}
+\index{i2c\_read@{i2c\_read}!BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}}
+\doxysubsubsection{\texorpdfstring{i2c\_read}{i2c\_read}}
+{\footnotesize\ttfamily \label{struct_b_h1750___handle_type_def_af04790c7ab63016f3aaff50ca1694bab} 
+\doxymbox{\hyperlink{bh1750_8h_a98c6ccaa146604c8e2c6c3d718c4a367}{BH1750\+\_\+\+I2\+C\+\_\+\+Read\+\_\+\+Func}} i2c\+\_\+read}
+
+Platform I2C read function pointer. \Hypertarget{struct_b_h1750___handle_type_def_aa0a746eab4afc5162a4173e7010e9393}\index{BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}!i2c\_write@{i2c\_write}}
+\index{i2c\_write@{i2c\_write}!BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}}
+\doxysubsubsection{\texorpdfstring{i2c\_write}{i2c\_write}}
+{\footnotesize\ttfamily \label{struct_b_h1750___handle_type_def_aa0a746eab4afc5162a4173e7010e9393} 
+\doxymbox{\hyperlink{bh1750_8h_a18fac3fc28e66618cd621900e2b499dc}{BH1750\+\_\+\+I2\+C\+\_\+\+Write\+\_\+\+Func}} i2c\+\_\+write}
+
+Platform I2C write function pointer. \Hypertarget{struct_b_h1750___handle_type_def_a03162a568e0564f8c5bc49129f9a6aef}\index{BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}!lux@{lux}}
+\index{lux@{lux}!BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}}
+\doxysubsubsection{\texorpdfstring{lux}{lux}}
+{\footnotesize\ttfamily \label{struct_b_h1750___handle_type_def_a03162a568e0564f8c5bc49129f9a6aef} 
+float lux}
+
+Last measured illuminance in lux. \Hypertarget{struct_b_h1750___handle_type_def_a37e90f5e3bd99fac2021fb3a326607d4}\index{BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}!mode@{mode}}
+\index{mode@{mode}!BH1750\_HandleTypeDef@{BH1750\_HandleTypeDef}}
+\doxysubsubsection{\texorpdfstring{mode}{mode}}
+{\footnotesize\ttfamily \label{struct_b_h1750___handle_type_def_a37e90f5e3bd99fac2021fb3a326607d4} 
+uint8\+\_\+t mode}
+
+Measurement mode command byte (see mode constants below). 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Core/\+\+Inc/\+sensors\+\_\+inc/\+\doxymbox{\hyperlink{bh1750_8h}{bh1750.\+h}}\end{DoxyCompactItemize}

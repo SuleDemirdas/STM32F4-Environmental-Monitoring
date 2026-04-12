@@ -1,0 +1,69 @@
+\doxysection{buf\+\_\+handle\+\_\+t Struct Reference}
+\hypertarget{structbuf__handle__t}{}\label{structbuf__handle__t}\index{buf\_handle\_t@{buf\_handle\_t}}
+
+
+Ring buffer control structure.  
+
+
+
+
+{\ttfamily \+\#include $<$ring\+\_\+buffer.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+float \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{structbuf__handle__t_afa761c0753ecc94346e155a39bd9ed9c}{buffer}}
+\item 
+uint16\+\_\+t \doxymbox{\hyperlink{structbuf__handle__t_ae0411d119b6e19281b04bbe57cc854bc}{head}}
+\item 
+uint16\+\_\+t \doxymbox{\hyperlink{structbuf__handle__t_ace756213e1bd262b8d63eaf28e6249c9}{tail}}
+\item 
+uint16\+\_\+t \doxymbox{\hyperlink{structbuf__handle__t_af6a39bfc7e1dc3b6f9c997c1c43fa996}{count}}
+\item 
+uint16\+\_\+t \doxymbox{\hyperlink{structbuf__handle__t_aaba88b24a21a6c70c895c0d55f4a69a0}{size}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Ring buffer control structure. 
+
+All fields should be treated as private; use the API functions below to interact with the buffer. 
+
+\label{doc-variable-members}
+\Hypertarget{structbuf__handle__t_doc-variable-members}
+\doxysubsection{Field Documentation}
+\Hypertarget{structbuf__handle__t_afa761c0753ecc94346e155a39bd9ed9c}\index{buf\_handle\_t@{buf\_handle\_t}!buffer@{buffer}}
+\index{buffer@{buffer}!buf\_handle\_t@{buf\_handle\_t}}
+\doxysubsubsection{\texorpdfstring{buffer}{buffer}}
+{\footnotesize\ttfamily \label{structbuf__handle__t_afa761c0753ecc94346e155a39bd9ed9c} 
+float\texorpdfstring{$\ast$}{*} buffer}
+
+Pointer to the externally allocated storage array. \Hypertarget{structbuf__handle__t_af6a39bfc7e1dc3b6f9c997c1c43fa996}\index{buf\_handle\_t@{buf\_handle\_t}!count@{count}}
+\index{count@{count}!buf\_handle\_t@{buf\_handle\_t}}
+\doxysubsubsection{\texorpdfstring{count}{count}}
+{\footnotesize\ttfamily \label{structbuf__handle__t_af6a39bfc7e1dc3b6f9c997c1c43fa996} 
+uint16\+\_\+t count}
+
+Number of valid samples currently in the buffer. \Hypertarget{structbuf__handle__t_ae0411d119b6e19281b04bbe57cc854bc}\index{buf\_handle\_t@{buf\_handle\_t}!head@{head}}
+\index{head@{head}!buf\_handle\_t@{buf\_handle\_t}}
+\doxysubsubsection{\texorpdfstring{head}{head}}
+{\footnotesize\ttfamily \label{structbuf__handle__t_ae0411d119b6e19281b04bbe57cc854bc} 
+uint16\+\_\+t head}
+
+Write index — points to the next free slot. \Hypertarget{structbuf__handle__t_aaba88b24a21a6c70c895c0d55f4a69a0}\index{buf\_handle\_t@{buf\_handle\_t}!size@{size}}
+\index{size@{size}!buf\_handle\_t@{buf\_handle\_t}}
+\doxysubsubsection{\texorpdfstring{size}{size}}
+{\footnotesize\ttfamily \label{structbuf__handle__t_aaba88b24a21a6c70c895c0d55f4a69a0} 
+uint16\+\_\+t size}
+
+Total capacity of the buffer (number of floats). \Hypertarget{structbuf__handle__t_ace756213e1bd262b8d63eaf28e6249c9}\index{buf\_handle\_t@{buf\_handle\_t}!tail@{tail}}
+\index{tail@{tail}!buf\_handle\_t@{buf\_handle\_t}}
+\doxysubsubsection{\texorpdfstring{tail}{tail}}
+{\footnotesize\ttfamily \label{structbuf__handle__t_ace756213e1bd262b8d63eaf28e6249c9} 
+uint16\+\_\+t tail}
+
+Read index — points to the oldest sample. 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Core/\+\+Inc/\+\doxymbox{\hyperlink{ring__buffer_8h}{ring\+\_\+buffer.\+h}}\end{DoxyCompactItemize}

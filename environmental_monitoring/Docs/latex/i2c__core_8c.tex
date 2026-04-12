@@ -1,0 +1,75 @@
+\doxysection{Core/\+\+Src/\+i2c\+\_\+core.c File Reference}
+\hypertarget{i2c__core_8c}{}\label{i2c__core_8c}\index{Core/Src/i2c\_core.c@{Core/Src/i2c\_core.c}}
+
+
+Sensor-\/agnostic I2C read abstraction implementation.  
+
+
+{\ttfamily \+\#include "{}i2c\+\_\+core.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \doxymbox{\hyperlink{i2c__core_8c_a3e5249e31c2d1272d59d1ef5182713b9}{i2c\+\_\+sensor\+\_\+read}} (uint8\+\_\+t device\+\_\+address, \doxymbox{\hyperlink{i2c__core_8h_a7db4018819078870576bf80126e7804d}{sensor\+\_\+t}} sensor\+\_\+type, void \texorpdfstring{$\ast$}{*}p\+\_\+handle)
+\begin{DoxyCompactList}\small\item\em Reads a single measurement from the specified I2C sensor. \end{DoxyCompactList}\item 
+uint8\+\_\+t \doxymbox{\hyperlink{i2c__core_8c_a67ebf1f8d15520a4522e0aff02a125d3}{I2\+C\+\_\+\+Scan\+Device\+Address}} (I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}hi2c)
+\begin{DoxyCompactList}\small\item\em Scans the I2C bus for the first responding device. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Sensor-\/agnostic I2C read abstraction implementation. 
+
+\begin{DoxyAuthor}{Author}
+Şule Nur Demirdaş 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+April 2026 
+\end{DoxyDate}
+
+
+\label{doc-func-members}
+\Hypertarget{i2c__core_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{i2c__core_8c_a67ebf1f8d15520a4522e0aff02a125d3}\index{i2c\_core.c@{i2c\_core.c}!I2C\_ScanDeviceAddress@{I2C\_ScanDeviceAddress}}
+\index{I2C\_ScanDeviceAddress@{I2C\_ScanDeviceAddress}!i2c\_core.c@{i2c\_core.c}}
+\doxysubsubsection{\texorpdfstring{I2C\_ScanDeviceAddress()}{I2C\_ScanDeviceAddress()}}
+{\footnotesize\ttfamily \label{i2c__core_8c_a67ebf1f8d15520a4522e0aff02a125d3} 
+uint8\+\_\+t I2\+C\+\_\+\+Scan\+Device\+Address (\begin{DoxyParamCaption}\item[{I2\+C\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{hi2c}{}\end{DoxyParamCaption})}
+
+
+
+Scans the I2C bus for the first responding device. 
+
+Iterates through all 128 possible 7-\/bit addresses and returns the first one that acknowledges HAL\+\_\+\+I2\+C\+\_\+\+Is\+Device\+Ready(). Intended as a diagnostic helper during hardware bring-\/up.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em hi2c} & Pointer to the initialised I2C peripheral handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+7-\/bit address (0x00–0x7F) of the first responding device, or 0x\+FF if no device is found. 
+\end{DoxyReturn}
+\Hypertarget{i2c__core_8c_a3e5249e31c2d1272d59d1ef5182713b9}\index{i2c\_core.c@{i2c\_core.c}!i2c\_sensor\_read@{i2c\_sensor\_read}}
+\index{i2c\_sensor\_read@{i2c\_sensor\_read}!i2c\_core.c@{i2c\_core.c}}
+\doxysubsubsection{\texorpdfstring{i2c\_sensor\_read()}{i2c\_sensor\_read()}}
+{\footnotesize\ttfamily \label{i2c__core_8c_a3e5249e31c2d1272d59d1ef5182713b9} 
+float i2c\+\_\+sensor\+\_\+read (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{device\+\_\+address}{, }\item[{\doxymbox{\hyperlink{i2c__core_8h_a7db4018819078870576bf80126e7804d}{sensor\+\_\+t}}}]{sensor\+\_\+type}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{p\+\_\+handle}{}\end{DoxyParamCaption})}
+
+
+
+Reads a single measurement from the specified I2C sensor. 
+
+The function triggers a sensor read via the appropriate driver, then returns the requested physical quantity as a float. On error -\/1.\+0f is returned.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em device\+\_\+address} & 8-\/bit I2C address of the target device (left-\/shifted by 1 as required by HAL). \\
+\hline
+\doxymbox{\texttt{in}}  & {\em sensor\+\_\+type} & The physical quantity to retrieve; must match the sensor pointed to by {\ttfamily p\+\_\+handle}. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em p\+\_\+handle} & Void pointer to the sensor driver handle (AHT20\+\_\+\+Handle\+Type\+Def\texorpdfstring{$\ast$}{*}, BMP180\+\_\+\+Handle\+Type\+Def\texorpdfstring{$\ast$}{*}, or BH1750\+\_\+\+Handle\+Type\+Def\texorpdfstring{$\ast$}{*}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Measured value as a float, or -\/1.\+0f on failure. 
+\end{DoxyReturn}

@@ -1,0 +1,98 @@
+\doxysection{Core/\+\+Src/\+filter.c File Reference}
+\hypertarget{filter_8c}{}\label{filter_8c}\index{Core/Src/filter.c@{Core/Src/filter.c}}
+
+
+Sliding-\/window median filter implementation.  
+
+
+{\ttfamily \+\#include "{}filter.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \doxymbox{\hyperlink{filter_8c_aad9f632ebc697242cd6d89d9ad931391}{filter\+\_\+sensor\+\_\+value}} (\doxymbox{\hyperlink{struct_filter___handle__t}{Filter\+\_\+\+Handle\+\_\+t}} \texorpdfstring{$\ast$}{*}p\+\_\+filt, float raw\+\_\+sensor\+\_\+value, uint8\+\_\+t window\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Applies a sliding-\/window median filter to a single raw sample. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{filter_8c_a5e9663576f3278f9024b85f531f8667a}{bubble\+\_\+sort}} (float \texorpdfstring{$\ast$}{*}array, uint8\+\_\+t array\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Sorts a float array in ascending order using bubble sort. \end{DoxyCompactList}\item 
+float \doxymbox{\hyperlink{filter_8c_a92cc151d99a2b21ad40fe7e89da17248}{calculate\+\_\+median}} (float \texorpdfstring{$\ast$}{*}array, uint8\+\_\+t array\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Computes the median of a pre-\/sorted float array. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Sliding-\/window median filter implementation. 
+
+\begin{DoxyAuthor}{Author}
+Şule Nur Demirdaş 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+April 2026 
+\end{DoxyDate}
+
+
+\label{doc-func-members}
+\Hypertarget{filter_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{filter_8c_a5e9663576f3278f9024b85f531f8667a}\index{filter.c@{filter.c}!bubble\_sort@{bubble\_sort}}
+\index{bubble\_sort@{bubble\_sort}!filter.c@{filter.c}}
+\doxysubsubsection{\texorpdfstring{bubble\_sort()}{bubble\_sort()}}
+{\footnotesize\ttfamily \label{filter_8c_a5e9663576f3278f9024b85f531f8667a} 
+void bubble\+\_\+sort (\begin{DoxyParamCaption}\item[{float \texorpdfstring{$\ast$}{*}}]{array}{, }\item[{uint8\+\_\+t}]{array\+\_\+size}{}\end{DoxyParamCaption})}
+
+
+
+Sorts a float array in ascending order using bubble sort. 
+
+Runs in O(n²) time; suitable for the small window sizes used here (≤ MAX\+\_\+\+WINDOW\+\_\+\+SIZE = 20 elements).
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em array} & Pointer to the array to sort in place. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em array\+\_\+size} & Number of elements in {\ttfamily array}. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{filter_8c_a92cc151d99a2b21ad40fe7e89da17248}\index{filter.c@{filter.c}!calculate\_median@{calculate\_median}}
+\index{calculate\_median@{calculate\_median}!filter.c@{filter.c}}
+\doxysubsubsection{\texorpdfstring{calculate\_median()}{calculate\_median()}}
+{\footnotesize\ttfamily \label{filter_8c_a92cc151d99a2b21ad40fe7e89da17248} 
+float calculate\+\_\+median (\begin{DoxyParamCaption}\item[{float \texorpdfstring{$\ast$}{*}}]{array}{, }\item[{uint8\+\_\+t}]{array\+\_\+size}{}\end{DoxyParamCaption})}
+
+
+
+Computes the median of a pre-\/sorted float array. 
+
+For even-\/length arrays the median is the average of the two central elements. For odd-\/length arrays it is the single central element.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em array} & Pointer to a sorted array of floats. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em array\+\_\+size} & Number of elements in {\ttfamily array}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Median value. 
+\end{DoxyReturn}
+\Hypertarget{filter_8c_aad9f632ebc697242cd6d89d9ad931391}\index{filter.c@{filter.c}!filter\_sensor\_value@{filter\_sensor\_value}}
+\index{filter\_sensor\_value@{filter\_sensor\_value}!filter.c@{filter.c}}
+\doxysubsubsection{\texorpdfstring{filter\_sensor\_value()}{filter\_sensor\_value()}}
+{\footnotesize\ttfamily \label{filter_8c_aad9f632ebc697242cd6d89d9ad931391} 
+float filter\+\_\+sensor\+\_\+value (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_filter___handle__t}{Filter\+\_\+\+Handle\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{p\+\_\+filt}{, }\item[{float}]{raw\+\_\+sensor\+\_\+value}{, }\item[{uint8\+\_\+t}]{window\+\_\+size}{}\end{DoxyParamCaption})}
+
+
+
+Applies a sliding-\/window median filter to a single raw sample. 
+
+On each call the new sample is inserted into the window. If the window has not yet reached {\ttfamily window\+\_\+size} the sample is appended; otherwise the oldest sample is discarded (left-\/shift) and the new one placed at the end. A copy of the window is then sorted and the median returned.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em p\+\_\+filt} & Pointer to the filter state structure. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em raw\+\_\+sensor\+\_\+value} & The latest raw measurement from the sensor. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em window\+\_\+size} & Effective window length (must be ≤ MAX\+\_\+\+WINDOW\+\_\+\+SIZE). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Filtered (median) value of the current window contents. 
+\end{DoxyReturn}

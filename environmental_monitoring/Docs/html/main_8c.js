@@ -1,0 +1,25 @@
+var main_8c =
+[
+    [ "RING_BUFFER_SIZE", "main_8c.html#a779b513296068d2a6186659183ff3c2c", null ],
+    [ "calculate_statistics", "main_8c.html#a95bd85dc1d64343eabe72f219491f9b9", null ],
+    [ "Error_Handler", "main_8c.html#a1730ffe1e560465665eb47d9264826f9", null ],
+    [ "HAL_TIM_PeriodElapsedCallback", "main_8c.html#a8a3b0ad512a6e6c6157440b68d395eac", null ],
+    [ "main", "main_8c.html#a840291bc02cba5474a4cb46a9b9566fe", null ],
+    [ "stm32_delay_wrapper", "main_8c.html#a15cbaa13a02ee9027f7876d4f71d94c0", null ],
+    [ "stm32_i2c_read_wrapper", "main_8c.html#aa706e72e0aba1f18e0096aea647f5f66", null ],
+    [ "stm32_i2c_write_wrapper", "main_8c.html#a1a1606f77f7c9e72e5c94d3d4d2c76ee", null ],
+    [ "SystemClock_Config", "main_8c.html#a70af21c671abfcc773614a9a4f63d920", null ],
+    [ "haht20", "main_8c.html#a3123086626eb5f721247e709d4a34563", null ],
+    [ "hbh1750", "main_8c.html#a8ca111d14899e8e09a2bba31313dc7db", null ],
+    [ "hbmp180", "main_8c.html#ae41c601f0e91b6258918a672869e93b0", null ],
+    [ "hBufHum", "main_8c.html#a9c6d8957a4102ad89ba6c242daff2b7c", null ],
+    [ "hBufLight", "main_8c.html#a969d3a5d31d79085eb4e6b33d9fe4227", null ],
+    [ "hBufTemp", "main_8c.html#a3c714ef07dbc5b5d9e59ac46e1183193", null ],
+    [ "hFiltHum", "main_8c.html#ae10e24f65b433b12b725f9201f018cbf", null ],
+    [ "hFiltLight", "main_8c.html#a679ab81e0dbebb07dfe9150f0adf1366", null ],
+    [ "hFiltTemp", "main_8c.html#a1d3d67b4e71e62bf6552ed71f603d188", null ],
+    [ "hum_stats", "main_8c.html#afe2a2b45cd73aa55f941aa46ef1620af", null ],
+    [ "light_stats", "main_8c.html#a521d3141f8f658da99e52425f8c4325d", null ],
+    [ "read_sensor_flag", "main_8c.html#ab9eb39f03146897cc6c11005204eee3d", null ],
+    [ "temp_stats", "main_8c.html#a00e5820d6225dac7fd9c465e7e0267f4", null ]
+];

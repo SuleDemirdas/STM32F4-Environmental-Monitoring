@@ -1,0 +1,317 @@
+\doxysection{Core/\+\+Inc/\+sensors\+\_\+inc/\+bmp180.h File Reference}
+\hypertarget{bmp180_8h}{}\label{bmp180_8h}\index{Core/Inc/sensors\_inc/bmp180.h@{Core/Inc/sensors\_inc/bmp180.h}}
+
+
+Driver interface for the BMP180 barometric pressure and temperature sensor.  
+
+
+{\ttfamily \+\#include "{}stdint.\+h"{}}\newline
+{\ttfamily \+\#include "{}stddef.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \doxymbox{\hyperlink{struct_b_m_p180___calibration_data__t}{BMP180\+\_\+\+Calibration\+Data\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em BMP180 factory calibration coefficients. \end{DoxyCompactList}\item 
+struct \doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}}
+\begin{DoxyCompactList}\small\item\em BMP180 driver handle. \end{DoxyCompactList}\item 
+union \doxymbox{\hyperlink{union_b_m_p180___ctrl_meas__t}{BMP180\+\_\+\+Ctrl\+Meas\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Bit-\/field overlay for the BMP180 ctrl\+\_\+meas register (0x\+F4). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_a45bdfa6d9d7d0cd755e19f73f2dc8b50}{BMP180\+\_\+\+CALIB\+\_\+\+DATA\+\_\+\+SIZE}}~22
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_acf911c35c81cbcb255d48ff88944dcd7}{BMP180\+\_\+\+ADDRESS}}~0x\+EE
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_ad3b1cf580b3c674f054b113f967828a8}{BMP180\+\_\+\+REG\+\_\+\+CALIB\+\_\+\+DATA\+\_\+\+START}}~0x\+AA
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_ae86a6098990ae713f4e50c01c9e0b34f}{BMP180\+\_\+\+REG\+\_\+\+CALIB\+\_\+\+DATA\+\_\+\+END}}~0x\+BF
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_a1c08fcf625a98f69b1d45cc7b7401231}{BMP180\+\_\+\+REG\+\_\+\+OUT\+\_\+\+XLSB}}~0x\+F8
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_add350b9677528de0c315553c6da2884b}{BMP180\+\_\+\+REG\+\_\+\+OUT\+\_\+\+LSB}}~0x\+F7
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_a8b16718956f520d70b87d9c89be27001}{BMP180\+\_\+\+REG\+\_\+\+OUT\+\_\+\+MSB}}~0x\+F6
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_a484290e8abe3e4bd33e5a0e20aa26465}{BMP180\+\_\+\+REG\+\_\+\+CTRL\+\_\+\+MEAS}}~0x\+F4
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_adf4a12f68ecb68eaf5e449161d567df1}{BMP180\+\_\+\+REG\+\_\+\+SOFT\+\_\+\+RST}}~0x\+E0
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_a467e40dded1b28350fba8bd548552825}{BMP180\+\_\+\+REG\+\_\+\+CHIP\+\_\+\+ID}}~0x\+D0
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_a5e6e85f616c3a96e814cbbb9dd505442}{BMP180\+\_\+\+MEASURE\+\_\+\+TEMP}}~0x0E
+\item 
+\+\#define \doxymbox{\hyperlink{bmp180_8h_a2c3d4df6b6d3a1102c84275dbb24e674}{BMP180\+\_\+\+MEASURE\+\_\+\+PRESSURE}}~0x14
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{bmp180_8h_a47db7d139174d5f86079cf3efbdf32f4}\label{bmp180_8h_a47db7d139174d5f86079cf3efbdf32f4} 
+typedef int8\+\_\+t(\texorpdfstring{$\ast$}{*} {\bfseries BMP180\+\_\+\+I2\+C\+\_\+\+Read\+\_\+\+Func}) (uint8\+\_\+t dev\+\_\+addr, uint8\+\_\+t reg\+\_\+addr, uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Function pointer type for platform I2C read. \end{DoxyCompactList}\item 
+\Hypertarget{bmp180_8h_ababe3561df5ff61ca15a134140ec9ba8}\label{bmp180_8h_ababe3561df5ff61ca15a134140ec9ba8} 
+typedef int8\+\_\+t(\texorpdfstring{$\ast$}{*} {\bfseries BMP180\+\_\+\+I2\+C\+\_\+\+Write\+\_\+\+Func}) (uint8\+\_\+t dev\+\_\+addr, uint8\+\_\+t reg\+\_\+addr, uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, uint16\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Function pointer type for platform I2C write. \end{DoxyCompactList}\item 
+\Hypertarget{bmp180_8h_a09d404dad710a3a36d217f699eafa580}\label{bmp180_8h_a09d404dad710a3a36d217f699eafa580} 
+typedef void(\texorpdfstring{$\ast$}{*} {\bfseries BMP180\+\_\+\+Delay\+\_\+\+Func}) (uint32\+\_\+t ms)
+\begin{DoxyCompactList}\small\item\em Function pointer type for platform millisecond delay. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int8\+\_\+t \doxymbox{\hyperlink{bmp180_8h_a99ddc132d9283e29b1596a7446bc14cf}{BMP180\+\_\+\+Init}} (\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Initialises the BMP180 sensor and reads calibration data. \end{DoxyCompactList}\item 
+int8\+\_\+t \doxymbox{\hyperlink{bmp180_8h_a3231bf959c4067be47d73f1dc942ed74}{BMP180\+\_\+\+Read}} (\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Reads both temperature and pressure from the BMP180. \end{DoxyCompactList}\item 
+int8\+\_\+t \doxymbox{\hyperlink{bmp180_8h_ad4793afc71961e0808991f951f86d4e6}{BMP180\+\_\+\+Read\+\_\+\+Temperature}} (\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Reads only the temperature from the BMP180. \end{DoxyCompactList}\item 
+int8\+\_\+t \doxymbox{\hyperlink{bmp180_8h_af1595bc9b16041b3f5d42b26b6617d5c}{BMP180\+\_\+get\+\_\+ut}} (\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}dev, int32\+\_\+t \texorpdfstring{$\ast$}{*}ut\+\_\+result)
+\begin{DoxyCompactList}\small\item\em Triggers and reads the raw (uncompensated) temperature ADC value. \end{DoxyCompactList}\item 
+int8\+\_\+t \doxymbox{\hyperlink{bmp180_8h_a4bbb9baeb7781fc0c813e9194b441838}{BMP180\+\_\+get\+\_\+up}} (\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}dev, int32\+\_\+t \texorpdfstring{$\ast$}{*}up\+\_\+result)
+\begin{DoxyCompactList}\small\item\em Triggers and reads the raw (uncompensated) pressure ADC value. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{bmp180_8h_a8109b81aa5296a9989588812f7d8e155}{BMP180\+\_\+calc\+\_\+temperature}} (\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}dev, int32\+\_\+t ut)
+\begin{DoxyCompactList}\small\item\em Converts a raw temperature ADC value to degrees Celsius. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{bmp180_8h_a30799a85833b28ed8efa6b79467e7276}{BMP180\+\_\+calc\+\_\+pressure}} (\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}dev, int32\+\_\+t up)
+\begin{DoxyCompactList}\small\item\em Converts a raw pressure ADC value to Pascals. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Driver interface for the BMP180 barometric pressure and temperature sensor. 
+
+The BMP180 uses a fixed I2C address of 0x77 and requires a one-\/time read of 11 factory calibration coefficients stored in non-\/volatile memory. These coefficients are used in a multi-\/step integer compensation algorithm specified by Bosch to convert raw ADC values into temperature (°C) and pressure (Pa).
+
+The oversampling setting (oss) controls the trade-\/off between conversion time and noise:\+ 0 = ultra-\/low power, 3 = ultra-\/high resolution.
+
+Platform independence is achieved through injected I2C and delay function pointers, identical in style to the AHT20 and BH1750 drivers.
+
+\begin{DoxyAuthor}{Author}
+Şule Nur Demirdaş 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+April 2026 
+\end{DoxyDate}
+
+
+\label{doc-define-members}
+\Hypertarget{bmp180_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{bmp180_8h_acf911c35c81cbcb255d48ff88944dcd7}\index{bmp180.h@{bmp180.h}!BMP180\_ADDRESS@{BMP180\_ADDRESS}}
+\index{BMP180\_ADDRESS@{BMP180\_ADDRESS}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_ADDRESS}{BMP180\_ADDRESS}}
+{\footnotesize\ttfamily \label{bmp180_8h_acf911c35c81cbcb255d48ff88944dcd7} 
+\+\#define BMP180\+\_\+\+ADDRESS~0x\+EE}
+
+8-\/bit I2C address (0x77 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 1). \Hypertarget{bmp180_8h_a45bdfa6d9d7d0cd755e19f73f2dc8b50}\index{bmp180.h@{bmp180.h}!BMP180\_CALIB\_DATA\_SIZE@{BMP180\_CALIB\_DATA\_SIZE}}
+\index{BMP180\_CALIB\_DATA\_SIZE@{BMP180\_CALIB\_DATA\_SIZE}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_CALIB\_DATA\_SIZE}{BMP180\_CALIB\_DATA\_SIZE}}
+{\footnotesize\ttfamily \label{bmp180_8h_a45bdfa6d9d7d0cd755e19f73f2dc8b50} 
+\+\#define BMP180\+\_\+\+CALIB\+\_\+\+DATA\+\_\+\+SIZE~22}
+
+Size of the calibration data block in bytes. \Hypertarget{bmp180_8h_a2c3d4df6b6d3a1102c84275dbb24e674}\index{bmp180.h@{bmp180.h}!BMP180\_MEASURE\_PRESSURE@{BMP180\_MEASURE\_PRESSURE}}
+\index{BMP180\_MEASURE\_PRESSURE@{BMP180\_MEASURE\_PRESSURE}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_MEASURE\_PRESSURE}{BMP180\_MEASURE\_PRESSURE}}
+{\footnotesize\ttfamily \label{bmp180_8h_a2c3d4df6b6d3a1102c84275dbb24e674} 
+\+\#define BMP180\+\_\+\+MEASURE\+\_\+\+PRESSURE~0x14}
+
+ctrl\+\_\+meas value to start a pressure read. \Hypertarget{bmp180_8h_a5e6e85f616c3a96e814cbbb9dd505442}\index{bmp180.h@{bmp180.h}!BMP180\_MEASURE\_TEMP@{BMP180\_MEASURE\_TEMP}}
+\index{BMP180\_MEASURE\_TEMP@{BMP180\_MEASURE\_TEMP}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_MEASURE\_TEMP}{BMP180\_MEASURE\_TEMP}}
+{\footnotesize\ttfamily \label{bmp180_8h_a5e6e85f616c3a96e814cbbb9dd505442} 
+\+\#define BMP180\+\_\+\+MEASURE\+\_\+\+TEMP~0x0E}
+
+ctrl\+\_\+meas value to start a temperature read. \Hypertarget{bmp180_8h_ae86a6098990ae713f4e50c01c9e0b34f}\index{bmp180.h@{bmp180.h}!BMP180\_REG\_CALIB\_DATA\_END@{BMP180\_REG\_CALIB\_DATA\_END}}
+\index{BMP180\_REG\_CALIB\_DATA\_END@{BMP180\_REG\_CALIB\_DATA\_END}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_REG\_CALIB\_DATA\_END}{BMP180\_REG\_CALIB\_DATA\_END}}
+{\footnotesize\ttfamily \label{bmp180_8h_ae86a6098990ae713f4e50c01c9e0b34f} 
+\+\#define BMP180\+\_\+\+REG\+\_\+\+CALIB\+\_\+\+DATA\+\_\+\+END~0x\+BF}
+
+Last calibration register address. \Hypertarget{bmp180_8h_ad3b1cf580b3c674f054b113f967828a8}\index{bmp180.h@{bmp180.h}!BMP180\_REG\_CALIB\_DATA\_START@{BMP180\_REG\_CALIB\_DATA\_START}}
+\index{BMP180\_REG\_CALIB\_DATA\_START@{BMP180\_REG\_CALIB\_DATA\_START}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_REG\_CALIB\_DATA\_START}{BMP180\_REG\_CALIB\_DATA\_START}}
+{\footnotesize\ttfamily \label{bmp180_8h_ad3b1cf580b3c674f054b113f967828a8} 
+\+\#define BMP180\+\_\+\+REG\+\_\+\+CALIB\+\_\+\+DATA\+\_\+\+START~0x\+AA}
+
+First calibration register address. \Hypertarget{bmp180_8h_a467e40dded1b28350fba8bd548552825}\index{bmp180.h@{bmp180.h}!BMP180\_REG\_CHIP\_ID@{BMP180\_REG\_CHIP\_ID}}
+\index{BMP180\_REG\_CHIP\_ID@{BMP180\_REG\_CHIP\_ID}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_REG\_CHIP\_ID}{BMP180\_REG\_CHIP\_ID}}
+{\footnotesize\ttfamily \label{bmp180_8h_a467e40dded1b28350fba8bd548552825} 
+\+\#define BMP180\+\_\+\+REG\+\_\+\+CHIP\+\_\+\+ID~0x\+D0}
+
+Chip ID register (expected value:\+ 0x55). \Hypertarget{bmp180_8h_a484290e8abe3e4bd33e5a0e20aa26465}\index{bmp180.h@{bmp180.h}!BMP180\_REG\_CTRL\_MEAS@{BMP180\_REG\_CTRL\_MEAS}}
+\index{BMP180\_REG\_CTRL\_MEAS@{BMP180\_REG\_CTRL\_MEAS}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_REG\_CTRL\_MEAS}{BMP180\_REG\_CTRL\_MEAS}}
+{\footnotesize\ttfamily \label{bmp180_8h_a484290e8abe3e4bd33e5a0e20aa26465} 
+\+\#define BMP180\+\_\+\+REG\+\_\+\+CTRL\+\_\+\+MEAS~0x\+F4}
+
+Control/\+measurement register. \Hypertarget{bmp180_8h_add350b9677528de0c315553c6da2884b}\index{bmp180.h@{bmp180.h}!BMP180\_REG\_OUT\_LSB@{BMP180\_REG\_OUT\_LSB}}
+\index{BMP180\_REG\_OUT\_LSB@{BMP180\_REG\_OUT\_LSB}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_REG\_OUT\_LSB}{BMP180\_REG\_OUT\_LSB}}
+{\footnotesize\ttfamily \label{bmp180_8h_add350b9677528de0c315553c6da2884b} 
+\+\#define BMP180\+\_\+\+REG\+\_\+\+OUT\+\_\+\+LSB~0x\+F7}
+
+ADC output LSB register. \Hypertarget{bmp180_8h_a8b16718956f520d70b87d9c89be27001}\index{bmp180.h@{bmp180.h}!BMP180\_REG\_OUT\_MSB@{BMP180\_REG\_OUT\_MSB}}
+\index{BMP180\_REG\_OUT\_MSB@{BMP180\_REG\_OUT\_MSB}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_REG\_OUT\_MSB}{BMP180\_REG\_OUT\_MSB}}
+{\footnotesize\ttfamily \label{bmp180_8h_a8b16718956f520d70b87d9c89be27001} 
+\+\#define BMP180\+\_\+\+REG\+\_\+\+OUT\+\_\+\+MSB~0x\+F6}
+
+ADC output MSB register. \Hypertarget{bmp180_8h_a1c08fcf625a98f69b1d45cc7b7401231}\index{bmp180.h@{bmp180.h}!BMP180\_REG\_OUT\_XLSB@{BMP180\_REG\_OUT\_XLSB}}
+\index{BMP180\_REG\_OUT\_XLSB@{BMP180\_REG\_OUT\_XLSB}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_REG\_OUT\_XLSB}{BMP180\_REG\_OUT\_XLSB}}
+{\footnotesize\ttfamily \label{bmp180_8h_a1c08fcf625a98f69b1d45cc7b7401231} 
+\+\#define BMP180\+\_\+\+REG\+\_\+\+OUT\+\_\+\+XLSB~0x\+F8}
+
+ADC output XLSB register. \Hypertarget{bmp180_8h_adf4a12f68ecb68eaf5e449161d567df1}\index{bmp180.h@{bmp180.h}!BMP180\_REG\_SOFT\_RST@{BMP180\_REG\_SOFT\_RST}}
+\index{BMP180\_REG\_SOFT\_RST@{BMP180\_REG\_SOFT\_RST}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_REG\_SOFT\_RST}{BMP180\_REG\_SOFT\_RST}}
+{\footnotesize\ttfamily \label{bmp180_8h_adf4a12f68ecb68eaf5e449161d567df1} 
+\+\#define BMP180\+\_\+\+REG\+\_\+\+SOFT\+\_\+\+RST~0x\+E0}
+
+Soft-\/reset register. 
+
+\label{doc-func-members}
+\Hypertarget{bmp180_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{bmp180_8h_a30799a85833b28ed8efa6b79467e7276}\index{bmp180.h@{bmp180.h}!BMP180\_calc\_pressure@{BMP180\_calc\_pressure}}
+\index{BMP180\_calc\_pressure@{BMP180\_calc\_pressure}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_calc\_pressure()}{BMP180\_calc\_pressure()}}
+{\footnotesize\ttfamily \label{bmp180_8h_a30799a85833b28ed8efa6b79467e7276} 
+void BMP180\+\_\+calc\+\_\+pressure (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{int32\+\_\+t}]{up}{}\end{DoxyParamCaption})}
+
+
+
+Converts a raw pressure ADC value to Pascals. 
+
+Implements the full Bosch pressure compensation algorithm. \doxylink{bmp180_8h_a8109b81aa5296a9989588812f7d8e155}{BMP180\+\_\+calc\+\_\+temperature()} must be called first to populate dev-\/\texorpdfstring{$>$}{>}b5.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Pointer to an initialised \doxylink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em up} & Raw uncompensated pressure value from \doxylink{bmp180_8h_a4bbb9baeb7781fc0c813e9194b441838}{BMP180\+\_\+get\+\_\+up()}. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{bmp180_8h_a8109b81aa5296a9989588812f7d8e155}\index{bmp180.h@{bmp180.h}!BMP180\_calc\_temperature@{BMP180\_calc\_temperature}}
+\index{BMP180\_calc\_temperature@{BMP180\_calc\_temperature}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_calc\_temperature()}{BMP180\_calc\_temperature()}}
+{\footnotesize\ttfamily \label{bmp180_8h_a8109b81aa5296a9989588812f7d8e155} 
+void BMP180\+\_\+calc\+\_\+temperature (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{int32\+\_\+t}]{ut}{}\end{DoxyParamCaption})}
+
+
+
+Converts a raw temperature ADC value to degrees Celsius. 
+
+Uses the Bosch compensation algorithm. Also computes and stores dev-\/\texorpdfstring{$>$}{>}b5 which is required by \doxylink{bmp180_8h_a30799a85833b28ed8efa6b79467e7276}{BMP180\+\_\+calc\+\_\+pressure()}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Pointer to an initialised \doxylink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em ut} & Raw uncompensated temperature value from \doxylink{bmp180_8h_af1595bc9b16041b3f5d42b26b6617d5c}{BMP180\+\_\+get\+\_\+ut()}. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{bmp180_8h_a4bbb9baeb7781fc0c813e9194b441838}\index{bmp180.h@{bmp180.h}!BMP180\_get\_up@{BMP180\_get\_up}}
+\index{BMP180\_get\_up@{BMP180\_get\_up}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_get\_up()}{BMP180\_get\_up()}}
+{\footnotesize\ttfamily \label{bmp180_8h_a4bbb9baeb7781fc0c813e9194b441838} 
+int8\+\_\+t BMP180\+\_\+get\+\_\+up (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{int32\+\_\+t \texorpdfstring{$\ast$}{*}}]{up\+\_\+result}{}\end{DoxyParamCaption})}
+
+
+
+Triggers and reads the raw (uncompensated) pressure ADC value. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Pointer to an initialised \doxylink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}. \\
+\hline
+\doxymbox{\texttt{out}}  & {\em up\+\_\+result} & Pointer to store the raw pressure value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 on I2C error. 
+\end{DoxyReturn}
+\Hypertarget{bmp180_8h_af1595bc9b16041b3f5d42b26b6617d5c}\index{bmp180.h@{bmp180.h}!BMP180\_get\_ut@{BMP180\_get\_ut}}
+\index{BMP180\_get\_ut@{BMP180\_get\_ut}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_get\_ut()}{BMP180\_get\_ut()}}
+{\footnotesize\ttfamily \label{bmp180_8h_af1595bc9b16041b3f5d42b26b6617d5c} 
+int8\+\_\+t BMP180\+\_\+get\+\_\+ut (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{int32\+\_\+t \texorpdfstring{$\ast$}{*}}]{ut\+\_\+result}{}\end{DoxyParamCaption})}
+
+
+
+Triggers and reads the raw (uncompensated) temperature ADC value. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Pointer to an initialised \doxylink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}. \\
+\hline
+\doxymbox{\texttt{out}}  & {\em ut\+\_\+result} & Pointer to store the raw temperature value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 on I2C error. 
+\end{DoxyReturn}
+\Hypertarget{bmp180_8h_a99ddc132d9283e29b1596a7446bc14cf}\index{bmp180.h@{bmp180.h}!BMP180\_Init@{BMP180\_Init}}
+\index{BMP180\_Init@{BMP180\_Init}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_Init()}{BMP180\_Init()}}
+{\footnotesize\ttfamily \label{bmp180_8h_a99ddc132d9283e29b1596a7446bc14cf} 
+int8\+\_\+t BMP180\+\_\+\+Init (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Initialises the BMP180 sensor and reads calibration data. 
+
+Verifies the chip ID (0x55) and reads all 11 calibration coefficients from the sensor\textquotesingle{}s EEPROM into dev-\/\texorpdfstring{$>$}{>}calib.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Pointer to a \doxylink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def} with function pointers set. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+
+-\/1 if a function pointer is NULL, the chip ID read fails, or calibration data cannot be read. 
+
+-\/2 if the chip ID value is not 0x55. 
+\end{DoxyReturn}
+\Hypertarget{bmp180_8h_a3231bf959c4067be47d73f1dc942ed74}\index{bmp180.h@{bmp180.h}!BMP180\_Read@{BMP180\_Read}}
+\index{BMP180\_Read@{BMP180\_Read}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_Read()}{BMP180\_Read()}}
+{\footnotesize\ttfamily \label{bmp180_8h_a3231bf959c4067be47d73f1dc942ed74} 
+int8\+\_\+t BMP180\+\_\+\+Read (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Reads both temperature and pressure from the BMP180. 
+
+Calls \doxylink{bmp180_8h_af1595bc9b16041b3f5d42b26b6617d5c}{BMP180\+\_\+get\+\_\+ut()}, \doxylink{bmp180_8h_a8109b81aa5296a9989588812f7d8e155}{BMP180\+\_\+calc\+\_\+temperature()}, \doxylink{bmp180_8h_a4bbb9baeb7781fc0c813e9194b441838}{BMP180\+\_\+get\+\_\+up()} and \doxylink{bmp180_8h_a30799a85833b28ed8efa6b79467e7276}{BMP180\+\_\+calc\+\_\+pressure()} in sequence. Results are stored in dev-\/\texorpdfstring{$>$}{>}temperature\+\_\+C and dev-\/\texorpdfstring{$>$}{>}pressure\+\_\+\+Pa.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Pointer to an initialised \doxylink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+
+-\/1 if the uncompensated temperature read fails. 
+
+-\/2 if the uncompensated pressure read fails. 
+\end{DoxyReturn}
+\Hypertarget{bmp180_8h_ad4793afc71961e0808991f951f86d4e6}\index{bmp180.h@{bmp180.h}!BMP180\_Read\_Temperature@{BMP180\_Read\_Temperature}}
+\index{BMP180\_Read\_Temperature@{BMP180\_Read\_Temperature}!bmp180.h@{bmp180.h}}
+\doxysubsubsection{\texorpdfstring{BMP180\_Read\_Temperature()}{BMP180\_Read\_Temperature()}}
+{\footnotesize\ttfamily \label{bmp180_8h_ad4793afc71961e0808991f951f86d4e6} 
+int8\+\_\+t BMP180\+\_\+\+Read\+\_\+\+Temperature (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Reads only the temperature from the BMP180. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Pointer to an initialised \doxylink{struct_b_m_p180___handle_type_def}{BMP180\+\_\+\+Handle\+Type\+Def}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 on I2C error. 
+\end{DoxyReturn}

@@ -1,0 +1,59 @@
+\doxysection{bh1750.\+h}
+\hypertarget{bh1750_8h_source}{}\label{bh1750_8h_source}\index{Core/Inc/sensors\_inc/bh1750.h@{Core/Inc/sensors\_inc/bh1750.h}}
+\doxymbox{\hyperlink{bh1750_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#ifndef\ INC\_SENSORS\_INC\_BH1750\_H\_}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ INC\_SENSORS\_INC\_BH1750\_H\_}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ "{}stdint.h"{}}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ "{}stddef.h"{}}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{typedef}\ int8\_t\ (*\doxymbox{\hyperlink{bh1750_8h_a98c6ccaa146604c8e2c6c3d718c4a367}{BH1750\_I2C\_Read\_Func}})(uint8\_t\ dev\_addr,\ uint8\_t\ reg\_addr,}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ *data,\ uint16\_t\ len);}
+\DoxyCodeLine{00037\ \textcolor{keyword}{typedef}\ int8\_t\ (*\doxymbox{\hyperlink{bh1750_8h_a18fac3fc28e66618cd621900e2b499dc}{BH1750\_I2C\_Write\_Func}})(uint8\_t\ dev\_addr,\ uint8\_t\ reg\_addr,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ *data,\ uint16\_t\ len);}
+\DoxyCodeLine{00040\ \textcolor{keyword}{typedef}\ void\ \ \ (*\doxymbox{\hyperlink{bh1750_8h_ac12ddada7c8fbe8249cfaf57c69fe7de}{BH1750\_Delay\_Func}})(uint32\_t\ ms);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00049\ \ \ \ \ \doxymbox{\hyperlink{bh1750_8h_a98c6ccaa146604c8e2c6c3d718c4a367}{BH1750\_I2C\_Read\_Func}}\ \ \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_af04790c7ab63016f3aaff50ca1694bab}{i2c\_read}};\ \ }
+\DoxyCodeLine{00050\ \ \ \ \ \doxymbox{\hyperlink{bh1750_8h_a18fac3fc28e66618cd621900e2b499dc}{BH1750\_I2C\_Write\_Func}}\ \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_aa0a746eab4afc5162a4173e7010e9393}{i2c\_write}};\ }
+\DoxyCodeLine{00051\ \ \ \ \ \doxymbox{\hyperlink{bh1750_8h_ac12ddada7c8fbe8249cfaf57c69fe7de}{BH1750\_Delay\_Func}}\ \ \ \ \ \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_a9bab8f83914de380c80491c111eecd8e}{delay\_ms}};\ \ }
+\DoxyCodeLine{00052\ \ \ \ \ uint8\_t\ \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_af3f726014b044194def151079f1f2d89}{address}};\ }
+\DoxyCodeLine{00053\ \ \ \ \ uint8\_t\ \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_a37e90f5e3bd99fac2021fb3a326607d4}{mode}};\ \ \ \ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{float}\ \ \ \doxymbox{\hyperlink{struct_b_h1750___handle_type_def_a03162a568e0564f8c5bc49129f9a6aef}{lux}};\ \ \ \ \ }
+\DoxyCodeLine{00055\ \}\ \doxymbox{\hyperlink{struct_b_h1750___handle_type_def}{BH1750\_HandleTypeDef}};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{comment}{/*\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ Address\ constants\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ */}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ BH1750\_ADDRESS\_GND\ \ (0x23\ <<\ 1)\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ BH1750\_ADDRESS\_VCC\ \ (0x5C\ <<\ 1)\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ BH1750\_ADDRESS\ \ \ \ \ \ \ BH1750\_ADDRESS\_GND\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{comment}{/*\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ Measurement\ mode\ commands\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ */}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ BH1750\_CONTINIOUS\_H\_RES\_MODE\ \ \ 0x10\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#define\ BH1750\_CONTINIOUS\_H\_RES\_MODE2\ \ 0x11\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ BH1750\_CONTINIOUS\_L\_RES\_MODE\ \ \ 0x13\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ BH1750\_ONE\_TIME\_H\_RES\_MODE\ \ \ \ \ 0x20\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#define\ BH1750\_ONE\_TIME\_H\_RES\_MODE2\ \ \ \ 0x21\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ BH1750\_ONE\_TIME\_L\_RES\_MODE\ \ \ \ \ 0x23\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{comment}{/*\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ Power\ /\ reset\ commands\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ */}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#define\ BH1750\_PWR\_DOWN\ \ 0x00\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#define\ BH1750\_PWR\_ON\ \ \ \ 0x01\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ BH1750\_RST\ \ \ \ \ \ \ 0x07\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{comment}{/*\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ Measurement\ timing\ (ms)\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ */}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ MEASUREMENT\_TIME\_H\_RES\_MODE\ \ \ 120\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ MEASUREMENT\_TIME\_H\_RES\_MODE2\ \ 120\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#define\ MEASUREMENT\_TIME\_L\_RES\_MODE\ \ \ \ 16\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ BH1750\_LUX\_COEFF\ 1.2f}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00091\ int8\_t\ \doxymbox{\hyperlink{bh1750_8h_a7af7493bcd0091d16d3945fe2f9cc157}{BH1750\_Init}}(\doxymbox{\hyperlink{struct_b_h1750___handle_type_def}{BH1750\_HandleTypeDef}}\ *dev);}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00104\ int8\_t\ \doxymbox{\hyperlink{bh1750_8h_ab7f9b67c6a16b8ab945f1624615fd52d}{BH1750\_Read}}(\doxymbox{\hyperlink{struct_b_h1750___handle_type_def}{BH1750\_HandleTypeDef}}\ *dev);}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_SENSORS\_INC\_BH1750\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}
