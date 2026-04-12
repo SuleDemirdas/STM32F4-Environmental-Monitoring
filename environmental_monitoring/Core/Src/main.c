@@ -22,9 +22,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "i2c_core.h"
-#include "bmp180.h"
-#include "bh1750.h"
-#include "aht20.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -104,9 +101,14 @@ BMP180_HandleTypeDef hbmp180;
 BH1750_HandleTypeDef hbh1750;
 AHT20_HandleTypeDef	haht20;
 
-int8_t error = 0;
 uint8_t address = 0;
-uint8_t flag_light_sensor = 0;
+uint8_t error = 0;
+
+volatile uint8_t read_sensor_flag = 0;
+float pressure = 0.0f;
+float temperature = 0.0f;
+float humidity = 0.0f;
+float light = 0.0f;
 /* USER CODE END 0 */
 
 /**
@@ -142,13 +144,12 @@ int main(void)
   MX_TIM3_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-//  hbmp180.i2c_read = stm32_i2c_read_wrapper;
-//  hbmp180.i2c_write = stm32_i2c_write_wrapper;
-//  hbmp180.delay_ms = stm32_delay_wrapper;
-//  hbmp180.oss = 0;
-//
-//  BMP180_Init(&hbmp180);
-//  BMP180_Read(&hbmp180);
+
+  hbmp180.i2c_read = stm32_i2c_read_wrapper;
+  hbmp180.i2c_write = stm32_i2c_write_wrapper;
+  hbmp180.delay_ms = stm32_delay_wrapper;
+  hbmp180.oss = 0;
+  error = BMP180_Init(&hbmp180);
 
   hbh1750.address = BH1750_ADDRESS_GND;
   hbh1750.delay_ms = stm32_delay_wrapper;
@@ -156,14 +157,14 @@ int main(void)
   hbh1750.i2c_write = stm32_i2c_write_wrapper;
   hbh1750.mode = BH1750_ONE_TIME_H_RES_MODE;
   BH1750_Init(&hbh1750);
-  HAL_TIM_Base_Start_IT(&htim3);
-//  address = I2C_ScanDeviceAddress();
 
   haht20.delay_ms = stm32_delay_wrapper;
   haht20.i2c_read = stm32_i2c_read_wrapper;
   haht20.i2c_write = stm32_i2c_write_wrapper;
-  error =  AHT20_Init(&haht20);
-  AHT20_Read(&haht20);
+  AHT20_Init(&haht20);
+
+  //address = I2C_ScanDeviceAddress(&hi2c3);
+  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -172,10 +173,13 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-	  if(flag_light_sensor)
+	  if(read_sensor_flag)
 	  {
-		  //BH1750_Read(&hbh1750);
-		  flag_light_sensor = 0;
+		  light = i2c_sensor_read(BH1750_ADDRESS, LIGHT_SENSOR, &hbh1750);
+		  humidity = i2c_sensor_read(AHT20_ADDRESS, HUMIDITY_SENSOR, &haht20);
+		  //pressure = i2c_sensor_read(BMP180_ADDRESS, PRESSURE_SENSOR, &hbmp180);
+		  temperature = i2c_sensor_read(AHT20_ADDRESS, TEMPERATURE_SENSOR, &hbmp180);
+		  read_sensor_flag = 0;
 	  }
   }
   /* USER CODE END 3 */
@@ -376,7 +380,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim->Instance == TIM3)
 	{
-		flag_light_sensor = 1;
+		read_sensor_flag = 1;
 		HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin );
 	}
 }

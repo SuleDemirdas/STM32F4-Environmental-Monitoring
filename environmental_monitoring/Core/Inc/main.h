@@ -31,7 +31,10 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "bmp180.h"
+#include "bh1750.h"
+#include "aht20.h"
+#include "ring_buffer.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

@@ -68,6 +68,7 @@ typedef union
 
 int8_t BMP180_Init(BMP180_HandleTypeDef *dev);
 int8_t BMP180_Read(BMP180_HandleTypeDef *dev);
+int8_t BMP180_Read_Temperature(BMP180_HandleTypeDef *dev);
 int8_t BMP180_get_cal_param(void);
 int8_t BMP180_get_ut(BMP180_HandleTypeDef *dev, int32_t *ut_result);
 int8_t BMP180_get_up(BMP180_HandleTypeDef *dev, int32_t *up_result);
