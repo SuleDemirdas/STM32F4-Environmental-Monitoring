@@ -44,6 +44,7 @@
  *----------------------------------------------------------*/
 
 /* USER CODE BEGIN Includes */
+#include "../../Middlewares/Third_Party/Segger_SystemView/include/SEGGER_SYSVIEW_FreeRTOS.h"
 /* Section where include file can be added */
 /* USER CODE END Includes */
 
