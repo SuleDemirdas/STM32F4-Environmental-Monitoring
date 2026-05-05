@@ -49,7 +49,13 @@ int buffer_write_value(buf_handle_t *p_handle, float p_sensor_data)
 {
     /* Allow count to grow only up to size; beyond that we overwrite. */
     if (p_handle->count < p_handle->size)
+    {
         p_handle->count++;
+    }
+    else
+    {
+        p_handle->tail = (p_handle->tail + 1) % p_handle->size;
+    }
 
     p_handle->buffer[p_handle->head] = p_sensor_data;
     p_handle->head = (p_handle->head + 1) % p_handle->size;
