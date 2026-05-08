@@ -143,14 +143,26 @@ BaseType_t  xConsumerTask;   /**< Task creation return status for the Consumer T
 BaseType_t  xProducerTask;   /**< Task creation return status for the Producer Task. */
 BaseType_t  xStatisticsTask; /**< Task creation return status for the Statistics Task. */
 
-xSemaphoreHandle xDataAvailable;   // Producer → Consumer
-xSemaphoreHandle xSpaceAvailable;  // Consumer → Producer
+xSemaphoreHandle xDataAvailable;   /**< Binary semaphore signaling new data is ready (Producer -> Consumer). */
+xSemaphoreHandle xSpaceAvailable;  /**< Binary semaphore signaling data was processed (Consumer -> Producer). */
 
-xSemaphoreHandle xMutexHumSensor;
-xSemaphoreHandle xMutexTempSensor;
-xSemaphoreHandle xMutexLightSensor;
+xSemaphoreHandle xMutexHumSensor;   /**< Mutex protecting shared I2C access to the humidity sensor. */
+xSemaphoreHandle xMutexTempSensor;  /**< Mutex protecting shared I2C access to the temperature sensor. */
+xSemaphoreHandle xMutexLightSensor; /**< Mutex protecting shared I2C access to the light sensor. */
 
+/**
+ * @brief  Task responsible for consuming raw sensor data.
+ * It applies sliding-window median filters and stores the results into ring buffers.
+ * Notifies the statistics task every 30 seconds.
+ * @param  pvParameters Pointer to task parameters (usually NULL).
+ */
 void vConsumerTask( void * pvParameters );
+
+/**
+ * @brief  Task responsible for periodically reading data from I2C sensors.
+ * Runs every 1000ms and signals the consumer task via xDataAvailable semaphore.
+ * @param  pvParameters Pointer to task parameters (usually NULL).
+ */
 void vProducerTask( void * pvParameters );
 
 /**
@@ -289,12 +301,12 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   xConsumerTask = xTaskCreate(
-                    vConsumerTask,       	/* Function that implements the task. */
-                    "Consumer",         	/* Text name for the task. */
-                    128,     	 	/* Stack size in words, not bytes. */
-                    NULL,    		/* Parameter passed into the task. */
-                    5,		/* Priority at which the task is created. */
-                    &h_ConsumerTask );    /* Used to pass out the created task's handle. */
+                    vConsumerTask,
+                    "Consumer",
+                    128,
+                    NULL,
+                    5,
+                    &h_ConsumerTask );
 
   if( xConsumerTask != pdPASS )
   {
@@ -302,12 +314,12 @@ int main(void)
   }
 
   xProducerTask = xTaskCreate(
-  		  	  	  vProducerTask,       /* Function that implements the task. */
-                    "Producer",          /* Text name for the task. */
-					128,      			/* Stack size in words, not bytes. */
-                    NULL,    /* Parameter passed into the task. */
-                    5,				/* Priority at which the task is created. */
-                    &h_ProducerTask );      /* Used to pass out the created task's handle. */
+  		  	  	  vProducerTask,
+                    "Producer",
+					128,
+                    NULL,
+                    5,
+                    &h_ProducerTask );
   if( xProducerTask != pdPASS )
   {
 	  vTaskDelete( h_ConsumerTask );
@@ -547,10 +559,15 @@ static void MX_GPIO_Init(void)
  */
 void vProducerTask( void * pvParameters )
 {
+	TickType_t xLastWakeTime;
+	const TickType_t xPeriod = pdMS_TO_TICKS( 1000 );
+	xLastWakeTime = xTaskGetTickCount();
+
     for( ;; )
     {
+		vTaskDelayUntil(&xLastWakeTime, xPeriod);
 
-		if(xSemaphoreTake( xSpaceAvailable, ( TickType_t ) 10 ) == pdTRUE)
+		if(xSemaphoreTake( xSpaceAvailable, portMAX_DELAY ) == pdTRUE)
         {
         	xSemaphoreTake( xMutexHumSensor, ( TickType_t ) 10 );
             raw_hum = i2c_sensor_read(AHT20_ADDRESS, HUMIDITY_SENSOR, &haht20);
@@ -565,16 +582,14 @@ void vProducerTask( void * pvParameters )
         	xSemaphoreGive( xMutexLightSensor );
 
         	xSemaphoreGive(xDataAvailable);
-
         }
-		vTaskDelay(1000 * portTICK_PERIOD_MS);
     }
 }
 void vConsumerTask( void * pvParameters )
 {
     for( ;; )
     {
-        if(xSemaphoreTake( xDataAvailable, ( TickType_t ) 10 ) == pdTRUE)
+        if(xSemaphoreTake( xDataAvailable, portMAX_DELAY ) == pdTRUE)
         {
         	float hum_raw_data;
         	float temp_raw_data;
@@ -584,7 +599,6 @@ void vConsumerTask( void * pvParameters )
         	hum_raw_data = raw_hum;
         	xSemaphoreGive( xMutexHumSensor );
 
-			vTaskDelay(5000 * portTICK_PERIOD_MS);
         	xSemaphoreTake( xMutexTempSensor, ( TickType_t ) 10 );
         	temp_raw_data = raw_temp;
         	xSemaphoreGive( xMutexTempSensor );
