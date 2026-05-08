@@ -143,6 +143,10 @@ BaseType_t  xConsumerTask;   /**< Task creation return status for the Consumer T
 BaseType_t  xProducerTask;   /**< Task creation return status for the Producer Task. */
 BaseType_t  xStatisticsTask; /**< Task creation return status for the Statistics Task. */
 
+TaskHandle_t h_ProducerTask;   /**< Handle for the Producer task, used for task control and querying. */
+TaskHandle_t h_StatisticsTask; /**< Handle for the Statistics task, used specifically for receiving task notifications. */
+TaskHandle_t h_ConsumerTask;   /**< Handle for the Consumer task, used for task control and management. */
+
 xSemaphoreHandle xDataAvailable;   /**< Binary semaphore signaling new data is ready (Producer -> Consumer). */
 xSemaphoreHandle xSpaceAvailable;  /**< Binary semaphore signaling data was processed (Consumer -> Producer). */
 
@@ -271,12 +275,10 @@ int main(void)
   buffer_init(&hBufTemp, storageTemp, RING_BUFFER_SIZE);
   buffer_init(&hBufLight, storageLight, RING_BUFFER_SIZE);
 
-  HAL_TIM_Base_Start_IT(&htim3);
-
+  SEGGER_SYSVIEW_Conf();
   /* USER CODE END 2 */
 
   /* Init scheduler */
-  osKernelInitialize();
 
   /* USER CODE BEGIN RTOS_MUTEX */
   xMutexHumSensor =  xSemaphoreCreateMutex( );
@@ -337,14 +339,18 @@ int main(void)
 	  vTaskDelete( h_StatisticsTask );
   }
 
+  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
   xSemaphoreGive(xSpaceAvailable);
+
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
-  osKernelStart();
+
+
+  vTaskStartScheduler();
 
   /* We should never get here as control is now taken by the scheduler */
 
@@ -559,6 +565,7 @@ static void MX_GPIO_Init(void)
  */
 void vProducerTask( void * pvParameters )
 {
+	SEGGER_SYSVIEW_Start();
 	TickType_t xLastWakeTime;
 	const TickType_t xPeriod = pdMS_TO_TICKS( 1000 );
 	xLastWakeTime = xTaskGetTickCount();
