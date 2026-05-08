@@ -139,10 +139,9 @@ void stm32_delay_wrapper(uint32_t ms) {
 /* --------------------------------------------------------------------------
  * Rtos object handles, task function prototypes
  * -------------------------------------------------------------------------- */
-TaskHandle_t h_ConsumerTask;
-TaskHandle_t h_ProducerTask;
-BaseType_t	xConsumerTask;
-BaseType_t	xProducerTask;
+BaseType_t  xConsumerTask;   /**< Task creation return status for the Consumer Task. */
+BaseType_t  xProducerTask;   /**< Task creation return status for the Producer Task. */
+BaseType_t  xStatisticsTask; /**< Task creation return status for the Statistics Task. */
 
 xSemaphoreHandle xDataAvailable;   // Producer → Consumer
 xSemaphoreHandle xSpaceAvailable;  // Consumer → Producer
@@ -153,6 +152,14 @@ xSemaphoreHandle xMutexLightSensor;
 
 void vConsumerTask( void * pvParameters );
 void vProducerTask( void * pvParameters );
+
+/**
+ * @brief  Task responsible for calculating descriptive statistics.
+ * Triggered by a notification from the consumer task to compute median, mean,
+ * min, max, and standard deviation from the ring buffers.
+ * @param  pvParameters Pointer to task parameters (usually NULL).
+ */
+void vStatisticsCalcTask(void * pvParameters);
 
 /* --------------------------------------------------------------------------
  * Sensor driver handles
@@ -305,6 +312,19 @@ int main(void)
   {
 	  vTaskDelete( h_ConsumerTask );
   }
+
+  xStatisticsTask = xTaskCreate(
+		  	  	  	vStatisticsCalcTask,
+                    "Statistics",
+					128,
+                    NULL,
+                    5,
+                    &h_StatisticsTask );
+  if( xStatisticsTask != pdPASS )
+  {
+	  vTaskDelete( h_StatisticsTask );
+  }
+
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -583,10 +603,29 @@ void vConsumerTask( void * pvParameters )
 
             float filt_light = filter_sensor_value(&hFiltLight, light_raw_data, 5);
             buffer_write_value(&hBufLight, filt_light);
+
+            seconds_counter++;
+
+            if(seconds_counter == 30)
+            {
+            	xTaskNotify(h_StatisticsTask, 0, eNoAction);
+            }
         }
     }
 }
+void vStatisticsCalcTask(void * pvParameters)
+{
+	for(;;)
+	{
+		xTaskNotifyWait( 0, 0, NULL, portMAX_DELAY );
 
+		calculate_statistics(&hBufHum, &hum_stats);
+		calculate_statistics(&hBufTemp, &temp_stats);
+		calculate_statistics(&hBufLight, &light_stats);
+		seconds_counter = 0;
+	}
+
+}
 
 /**
  * @brief Computes descriptive statistics from a ring buffer.
