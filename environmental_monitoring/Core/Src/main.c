@@ -611,23 +611,18 @@ void calculate_statistics(buf_handle_t *p_handle, Sensor_Stats_t *stats)
     float temp_arr[RING_BUFFER_SIZE];
     float sum = 0.0f;
 
-    stats->min = p_handle->buffer[0];
-    stats->max = p_handle->buffer[0];
-
-    for (uint16_t i = 0; i < p_handle->count; i++) {
+    for (uint16_t i = 0; i < p_handle->count; i++)
+    {
         float val = p_handle->buffer[i];
         temp_arr[i] = val;
         sum += val;
-
-        if (val < stats->min)
-		{
-        	stats->min = val;
-		}
-        if (val > stats->max)
-		{
-        	stats->max = val;
-		}
     }
+
+    bubble_sort(temp_arr, p_handle->count);
+    stats->median = calculate_median(temp_arr, p_handle->count);
+
+    stats->min = temp_arr[0];
+    stats->max = temp_arr[p_handle->count - 1];
 
     float mean = sum / p_handle->count;
     float variance_sum = 0.0f;
@@ -637,9 +632,6 @@ void calculate_statistics(buf_handle_t *p_handle, Sensor_Stats_t *stats)
         variance_sum += (temp_arr[i] - mean) * (temp_arr[i] - mean);
     }
     stats->std_dev = sqrtf(variance_sum / p_handle->count);
-
-    bubble_sort(temp_arr, p_handle->count);
-    stats->median = calculate_median(temp_arr, p_handle->count);
 }
 
 /* USER CODE END 4 */
